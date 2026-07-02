@@ -1,66 +1,77 @@
-# Update Log
-## Progress List Upload Formatter
+## Update Log
 
-This log tracks changes to the spec set (`PRD.md`, `architecture.md`, `design.md`) across versions.
+### Progress List Upload Formatter
+
+This log tracks changes to the spec set (PRD.md, architecture.md, design.md) across versions.
+
+### v1.2 — July 2, 2026
+
+**Author:** Brandon Gittelman
+**Trigger:** Live testing of the v1.1 build. All items below are corrections and improvements based on real-world usage; the v1.1 acceptance criteria remain valid.
+
+#### Changes
+
+| # | Change | Type |
+|---|--------|------|
+| 1 | **Fuzzy column matcher rewritten.** The v1.1 matcher failed on common vendor headers like `PRODUCT (use drop down menu)`, `COUNTRY (use drop down menu)`, `FIRST NAME`, `EMAIL ADDRESS`. The new matcher: (a) normalizes by stripping parenthetical hints, (b) applies token-overlap (Jaccard) scoring as a first pass before Fuse.js, (c) drops stopwords (`use`, `menu`, `drop`, `down`, `dropdown`, `select`, `please`, `value`, `the`, `a`, `an`, `of`, `or`, `and`), (d) uses a Fuse threshold of 0.5 (up from 0.4) as a soft fallback. | Breaking |
+| 2 | **`columnSynonyms` in picklists.json now covers all 37 mappable template columns**, including UPPERCASE, snake_case, and parenthetical variants. The v1.1 shipped with synonyms for only 6 columns. | Breaking |
+| 3 | **Router preserves scroll position and focus across re-renders.** The v1.1 router called `window.scrollTo(0, 0)` on every render, which fired on every keystroke and checkbox click. It now: (a) only scrolls to top when the wizard step changes, (b) captures scrollY, focused element id, and text selection before mount, (c) restores them after mount using `focus({preventScroll:true})` and `setSelectionRange()`, (d) restores scroll three times (once sync, twice in `requestAnimationFrame`), (e) sets `history.scrollRestoration = 'manual'`. | Breaking |
+| 4 | **Dropzone CSS fixed.** The dropzone is a `<label>` element. Labels are inline by default, which caused the box to collapse to content width. Required: `.dropzone { display: block; width: 100%; box-sizing: border-box; }` and `.dropzone .dz-title, .dropzone .dz-sub { display: block; }`. | Breaking |
+| 5 | **Step 4 (Review) must not call `store.set()` inside `render()`.** The v1.1 draft called `store.set({ processedRows: rows })` at the top of Step 4's render, which caused an infinite loop. ProcessedRows must be computed inside render and cached in a module-local variable. | Breaking |
+| 6 | **JS syntax validation required before shipping.** Every `.js` module must pass `node --check` before it is committed. | Process |
+| 7 | **Browser DevTools scroll-and-focus smoke test** added to acceptance testing. | Process |
+
+#### Version Bumps
+- PRD.md: 1.1 → **1.2**
+- architecture.md: 1.1 → **1.2**
+- design.md: 1.1 → **1.2**
+
+#### Migration Notes for Developers Regenerating From v1.1
+
+- **Read this v1.2 section BEFORE regenerating anything.** These fixes are already known and documented; regenerating from v1.1 alone will reproduce every one of the bugs above.
+- Rewrite `js/modules/fuzzy.js` per architecture.md §4.2.
+- Rewrite `js/router.js` per architecture.md §6.
+- Rewrite `styles/steps.css` `.dropzone` block per design.md Step 1.
+- In `js/ui/step4-review.js`, remove any `store.set({ processedRows: ... })` call. Cache locally.
+- Expand `picklists.json` `columnSynonyms` to cover all 37 template columns; see architecture.md §5.1.
+
+#### Testing Priorities for v1.2
+
+- Upload a file with header `PRODUCT (use drop down menu)` → auto-map to Product with High confidence.
+- Upload a file with header `COUNTRY (use drop down menu)` → auto-map to Country with High confidence.
+- Upload a file with all-uppercase headers → all auto-map with High confidence.
+- On Step 3, scroll halfway down, then check a checkbox → page stays put.
+- On Step 3, type in `Campaign Source` → cursor stays, no character loss.
+- On Step 3, type in `Lead Owner ID` → Manual Lead Assignment auto-checks, focus stays.
+- On Step 4, click a row checkbox → page stays, row updates in place.
+- Every `.js` file must pass `node --check`.
 
 ---
 
-## v1.1 — July 2, 2026
+### v1.1 — July 2, 2026
 
-**Author:** Brandon Gittelman  
+**Author:** Brandon Gittelman
 **Trigger:** Updates based on live testing of the v1.0 build.
 
-### Changes
+#### Changes
 
-| # | Change | Type | Files Updated |
-|---|---|---|---|
-| 1 | **Eliminated all NPM / Node.js dependencies.** The app is now vanilla HTML/CSS/JavaScript. SheetJS and Fuse.js are consumed as pre-built UMD bundles via CDN or a local `vendor/` folder. There is no `package.json`, `node_modules/`, bundler, or transpiler in the project. | Breaking (stack) | architecture.md §1–§2, §13; PRD.md NFR-3, AC-7 |
-| 2 | **Bypass Bogus Program** is now rendered as a **checkbox** in the UI. When checked, the export contains the literal string `Yes`; when unchecked, the export cell is blank. | Breaking (UX + data) | PRD.md §2.1, §3.3, §2.5; design.md Step 3, §11; architecture.md §4.5 |
-| 3 | **Manual Lead Assignment** is now rendered as a **checkbox** and **auto-checks** whenever the associated **Lead Owner ID** has a non-empty value. The user may still uncheck it manually; that choice is respected for the rest of the session. Auto-check triggers an ARIA live announcement for screen readers and a brief green flash on the checkbox. | Breaking (UX + data) | PRD.md §3.3, §3.4, §3.6, §2.5; design.md Step 3, §6, §9; architecture.md §4.4, §8.4 |
-| 4 | **Removed the standalone `Lead Owner` column** (formerly column #34). Lead Owner ID is the sole ownership field. Template column count is now **37** (was 38). | Breaking (schema) | PRD.md §2.1, §2.2, §3.3, AC-5; design.md Step 5, §5; architecture.md §3.2, §4.5 |
-| 5 | **Picklists are now externalized to `picklists.json`.** Marketing Ops can add/remove/rename picklist values (Country, Product, Lead Source, Call to Action, Target Channel Type, Campaign Member Status, utm_medium), column synonyms, and country aliases by editing this file — no code change, no rebuild, no NPM step. Schema is documented and validated on load. | New capability | PRD.md §3.8 (new), AC-8 (new); architecture.md §4.6, §5 (new), §10.4; design.md Step 3 note, §11 |
-| 6 | **`COUNTRY (use drop down menu)` renamed to `Country`** everywhere: column headers, dropdowns, tooltips, error messages, and picklist keys. | UX polish | all three files |
-| 7 | **`PRODUCT (use drop down menu)` renamed to `Product`** everywhere: column headers, dropdowns, tooltips, error messages, and picklist keys. | UX polish | all three files |
-| 8 | **All column names normalized to Title Case.** `FIRST NAME` → `First Name`, `LAST NAME` → `Last Name`, `EMAIL ADDRESS` → `Email Address`, `COMPANY NAME` → `Company Name`, `ADDRESS 1` → `Address 1`, `CITY` → `City`, `STATE OR PROVINCE` → `State or Province`, `ZIP OR POSTAL CODE` → `Zip or Postal Code`, `BUSINESS PHONE` → `Business Phone`, `INDUSTRY` → `Industry`, `REVENUE` → `Revenue`, `EMPLOYEE SIZE` → `Employee Size`, `CAMPAIGN SOURCE` → `Campaign Source`, `LEAD SOURCE - INITIAL` → `Lead Source - Initial`, `LEAD SOURCE - MOST RECENT` → `Lead Source - Most Recent`, `CALL TO ACTION` → `Call to Action`, `TARGET CHANNEL TYPE` → `Target Channel Type`, `FORM COMMENTS` → `Form Comments`, `OFFER TITLE` → `Offer Title`, `CAMPAIGN MEMBER STATUS` → `Campaign Member Status`, `SFDC CAMPAIGN ID` → `SFDC Campaign ID`. The `utm_medium`, `utm_source`, `utm_campaign` fields keep their lowercase, underscore-separated form (UTM standard). `Title`, `Website`, `Electronic Message Opt Out`, `Opt In - Explicit Date` were already correctly cased. | UX polish + data | all three files |
-| 9 | **New validation rule: one Email Address per Product per session.** For each unique `(lowercased_email, Product)` pair, only one row is permitted across all uploaded files in the session. Multiple rows sharing a pair are flagged as **errors** (block export) with a message that names the email, the product, and the affected row numbers. Duplicate emails across **different** Products remain warnings. | New capability | PRD.md §2.4 (new), FR-6.9 (new), US-11 (updated), AC-4; architecture.md §8.1, §4.4 rule 11; design.md Step 4, §11 |
-
-### Version Bumps
-- `PRD.md`: 1.0 → **1.1**
-- `architecture.md`: 1.0 → **1.1**
-- `design.md`: 1.0 → **1.1**
-
-### Migration Notes for Developers Handing Off From v1.0
-1. **Delete** any existing `package.json`, `package-lock.json`, `node_modules/`, `vite.config.*`, `tsconfig.json`, `.babelrc`, `webpack.*` files. Anything left is a violation of NFR-3.
-2. **Adopt** the new folder layout in `architecture.md` §2.2.
-3. **Reduce** the template column list from 38 → 37 by removing the old `LEAD OWNER` column. Every export writer, validator, mapping seed, and test fixture must be updated.
-4. **Rename** template column keys everywhere. If you kept any hard-coded string references to `FIRST NAME`, `EMAIL ADDRESS`, `COUNTRY (use drop down menu)`, etc., update them to their new Title Case equivalents.
-5. **Externalize** picklists from any TypeScript/JavaScript constants files into `picklists.json`. Load them at app start; do not duplicate them in code.
-6. **Add** the new `DuplicateEmailWithinProductValidator`. See `architecture.md` §8.1.
-7. **Convert** the Marketing Ops text fields `Manual Lead Assignment` and `Bypass Bogus Program` to checkboxes. Wire the auto-check behavior from Lead Owner ID → Manual Lead Assignment.
-8. **Test** using the expanded sample set listed in `architecture.md` §14.
-
-### Testing Priorities for v1.1
-- [ ] Confirm no `npm` / `node` / `vite` commands are needed to run the app.
-- [ ] Confirm the app loads and renders correctly when served with `python -m http.server`.
-- [ ] Confirm `picklists.json` edits are reflected on browser refresh without any code change.
-- [ ] Confirm export CSV/XLSX contains exactly 37 columns in Title Case.
-- [ ] Confirm checkbox fields serialize as `Yes` (checked) or blank (unchecked).
-- [ ] Confirm Manual Lead Assignment auto-checks when Lead Owner ID is populated at both the batch and row levels.
-- [ ] Confirm same email + same Product across files raises an **error** (blocks export).
-- [ ] Confirm same email + different Products raises a **warning** only (does not block export).
-- [ ] Confirm blocking modal appears if `picklists.json` is missing or malformed.
+| # | Change | Type |
+|---|--------|------|
+| 1 | Eliminated all NPM / Node.js dependencies. Vanilla HTML/CSS/JS. SheetJS and Fuse.js as pre-built UMD via CDN or `vendor/`. | Breaking |
+| 2 | Bypass Bogus Program is now a checkbox; exports `Yes` when checked, blank when unchecked. | Breaking |
+| 3 | Manual Lead Assignment is a checkbox and auto-checks when Lead Owner ID has a value. Manual uncheck respected for the session. | Breaking |
+| 4 | Standalone Lead Owner column removed. Template count = 37 (was 38). | Breaking |
+| 5 | Picklists externalized to `picklists.json`. Marketing Ops can edit without code changes. | New capability |
+| 6 | COUNTRY renamed to Country everywhere. | UX polish |
+| 7 | PRODUCT renamed to Product everywhere. | UX polish |
+| 8 | All column names normalized to Title Case; utm_* fields stay lowercase. | UX polish |
+| 9 | Email + Product uniqueness rule. Same email + same Product = error. Same email + different Products = warning. | New capability |
 
 ---
 
-## v1.0 — June 2026
+### v1.0 — June 2026
 
-**Author:** Brandon Gittelman  
+**Author:** Brandon Gittelman
 Initial spec set produced for the Progress List Upload Formatter.
 
-### Highlights
-- 5-step wizard (Upload → Map → Settings → Review → Export)
-- 38-column Eloqua template
-- React 18 + TypeScript + Vite + Zustand + Tailwind + Fuse.js + SheetJS stack
-- Client-first architecture, no server required
-- Progress brand system (green/pink/blue/navy)
-- Fuzzy column mapping, country standardization, SFDC ID validation, duplicate detection
+Highlights: 5-step wizard, 38-column Eloqua template, React 18 + TypeScript + Vite + Zustand + Tailwind + Fuse.js + SheetJS stack, client-first architecture, Progress brand system, fuzzy column mapping, country standardization, SFDC ID validation, duplicate detection.
