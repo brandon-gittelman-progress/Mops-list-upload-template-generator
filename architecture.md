@@ -1,462 +1,429 @@
 # Technical Architecture
-# Progress List Upload Formatter
+## Progress List Upload Formatter
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Owner:** Brandon Gittelman, Marketing Technical Architect, Principal  
-**Last Updated:** June 2026
+**Last Updated:** July 2026
+
+> **v1.1 headline change:** the app is **no longer built with NPM/Node**. It is now a static vanilla HTML/CSS/JavaScript app served as flat files. All third-party libraries are consumed as pre-built UMD/IIFE bundles from a CDN or a local `vendor/` folder.
 
 ---
 
-## 1. Architecture Overview
+### 1. Architecture Overview
 
-### 1.1 Architecture Philosophy
-**Client-first, optional backend.** The v1 application runs entirely in the user's browser — no lead data is transmitted to any server. This eliminates privacy/compliance concerns and removes infrastructure dependencies. The architecture is designed so a lightweight backend can be added later (for saved profiles, audit logs, or direct Eloqua integration) without rewriting the core processing engine.
+#### 1.1 Architecture Philosophy
+**Client-only, zero-build, zero-NPM.** The v1.1 application runs entirely in the user's browser — no lead data is transmitted to any server, and no local Node.js toolchain is required to build, run, or deploy the app. This eliminates:
+- Privacy/compliance concerns (no PII leaves the browser)
+- Infrastructure dependencies (no server needed)
+- Local developer setup issues (no `npm install`, no Vite, no proxy/registry problems)
+- Build-time complexity (no bundler, no transpiler)
 
-### 1.2 High-Level Architecture Diagram
+The architecture is still designed so a lightweight backend can be added later (for saved profiles, audit logs, or direct Eloqua integration) without rewriting the client-side processing engine.
 
+#### 1.2 High-Level Architecture Diagram
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         BROWSER (CLIENT)                         │
-│                                                                  │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐  │
-│  │  UI Layer    │───▶│  State Mgmt  │───▶│  Processing      │  │
-│  │  (React)     │    │  (Zustand)   │    │  Engine          │  │
-│  └──────────────┘    └──────────────┘    └──────────────────┘  │
-│         │                    │                    │             │
-│         │                    │                    ▼             │
-│         │                    │            ┌──────────────┐     │
-│         │                    │            │  File Parser │     │
-│         │                    │            │  (SheetJS)   │     │
-│         │                    │            └──────────────┘     │
-│         │                    │                    │             │
-│         │                    │                    ▼             │
-│         │                    │            ┌──────────────┐     │
-│         │                    │            │  Fuzzy       │     │
-│         │                    │            │  Matcher     │     │
-│         │                    │            │  (Fuse.js)   │     │
-│         │                    │            └──────────────┘     │
-│         │                    │                    │             │
-│         │                    │                    ▼             │
-│         │                    │            ┌──────────────┐     │
-│         │                    │            │  Validation  │     │
-│         │                    │            │  Engine      │     │
-│         │                    │            └──────────────┘     │
-│         │                    │                    │             │
-│         │                    │                    ▼             │
-│         │                    │            ┌──────────────┐     │
-│         │                    └───────────▶│  Export      │     │
-│         │                                 │  (SheetJS)   │     │
-│         │                                 └──────────────┘     │
-│         ▼                                                       │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  Browser File Download (no server roundtrip)             │  │
-│  └──────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│              FUTURE (Optional Lightweight Backend)               │
-│                                                                  │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐  │
-│  │  REST API    │    │  Mapping     │    │  Audit Log       │  │
-│  │  (Node)      │    │  Profiles    │    │  (SQLite/PG)     │  │
-│  └──────────────┘    └──────────────┘    └──────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
++-----------------------------------------------------------------+
+|                         BROWSER (CLIENT)                         |
+|                                                                  |
+|  +--------------+    +--------------+    +------------------+  |
+|  |  UI Layer    |--->|  App State   |--->|  Processing      |  |
+|  |  (vanilla    |    |  (plain JS   |    |  Engine          |  |
+|  |  HTML + JS)  |    |   object +   |    |  (modules/*.js)  |  |
+|  |              |    |   pub-sub)   |    |                  |  |
+|  +--------------+    +--------------+    +------------------+  |
+|                                                    |             |
+|                                                    v             |
+|                                            +--------------+     |
+|                                            |  SheetJS     |     |
+|                                            |  UMD bundle  |     |
+|                                            +--------------+     |
+|                                                    |             |
+|                                                    v             |
+|                                            +--------------+     |
+|                                            |  Fuse.js     |     |
+|                                            |  UMD bundle  |     |
+|                                            +--------------+     |
+|                                                                  |
+|  +----------------------------------------------------------+  |
+|  |  picklists.json  (fetched at load; editable by Ops)      |  |
+|  +----------------------------------------------------------+  |
++-----------------------------------------------------------------+
 ```
 
 ---
 
-## 2. Recommended Tech Stack
+### 2. Recommended Tech Stack
 
-### 2.1 Frontend (v1)
+#### 2.1 Frontend (v1.1) — No NPM
+
 | Layer | Technology | Rationale |
 |---|---|---|
-| **Framework** | React 18 + TypeScript | Industry standard; strong typing prevents schema bugs |
-| **Build Tool** | Vite | Fast HMR, small bundles, modern DX |
-| **State Management** | Zustand | Lightweight, no boilerplate, perfect for wizard-style state |
-| **UI Components** | Custom + Headless UI / Radix | Accessibility-first primitives; full design control |
-| **Styling** | Tailwind CSS | Rapid iteration; matches Progress design tokens |
-| **File Parsing** | SheetJS (xlsx) | Battle-tested for .xlsx, .xls, .csv |
-| **Fuzzy Matching** | Fuse.js | Lightweight, configurable, works for column-name matching |
-| **Data Grid** | TanStack Table v8 | Headless table with sorting/filtering/virtualization for large rows |
-| **Date Handling** | date-fns | Modular, tree-shakable |
-| **Hosting** | Static hosting (Azure Static Web Apps, Netlify, or internal CDN) | No server required; can be embedded in internal portal |
+| **Markup** | HTML5 (single `index.html` + step partials via `<template>` tags) | No build; browser-native |
+| **Styling** | Plain CSS3 with CSS Custom Properties (variables) for theming | No Tailwind, no PostCSS, no build step |
+| **Scripting** | Vanilla JavaScript (ES2020+) delivered as ES modules via `<script type="module">` | Modern browsers execute directly; no bundler needed |
+| **State Management** | Small hand-written store (~50 LOC) using `Object` + `EventTarget` for pub-sub | No Zustand, no Redux; plain JS |
+| **File Parsing** | **SheetJS** loaded from CDN (`xlsx.full.min.js`) or `/vendor/xlsx.full.min.js` | UMD build; exposes global `XLSX` |
+| **Fuzzy Matching** | **Fuse.js** loaded from CDN (`fuse.min.js`) or `/vendor/fuse.min.js` | UMD build; exposes global `Fuse` |
+| **Data Grid** | Hand-rolled virtualized `<table>` (~200 LOC) using `IntersectionObserver` | No TanStack; keeps stack dependency-free |
+| **Date Handling** | Native `Intl.DateTimeFormat` + tiny helper (`date-utils.js`) | No date-fns |
+| **Icons** | Inline SVG stored in `/assets/icons/` | No icon-font, no npm package |
+| **Fonts** | System font stack + optional Mulish `.woff2` in `/assets/fonts/` via `@font-face` | No `@fontsource` npm package |
+| **Hosting** | Static hosting (Azure Static Web Apps, SharePoint page, internal CDN, IIS virtual dir) | Just serve the folder |
 
-### 2.2 Backend (Future, Optional)
-| Layer | Technology | Rationale |
-|---|---|---|
-| **Runtime** | Node.js 20+ | Same language as frontend; shared validation logic |
-| **Framework** | Fastify or Express | Lightweight REST API |
-| **Database** | PostgreSQL or SQLite | For saved mapping profiles, audit logs |
-| **Auth** | Microsoft Entra ID (SSO) | Matches Progress internal auth standards |
-| **Hosting** | Azure App Service | Aligns with Progress infrastructure |
+#### 2.2 Project Layout (Static, No Build)
+```
+progress-list-upload/
+├── index.html                     ← app entrypoint
+├── picklists.json                 ← editable by Marketing Ops
+├── styles/
+│   ├── tokens.css                 ← CSS custom properties (colors, spacing)
+│   ├── base.css
+│   ├── components.css
+│   └── steps.css
+├── js/
+│   ├── app.js                     ← bootstraps, wires router + store
+│   ├── store.js                   ← state + pub/sub
+│   ├── router.js                  ← wizard step router (no framework)
+│   ├── modules/
+│   │   ├── parser.js              ← SheetJS wrapper
+│   │   ├── fuzzy.js               ← Fuse.js wrapper + synonyms
+│   │   ├── country.js             ← country standardizer
+│   │   ├── validator.js           ← all validation rules
+│   │   ├── exporter.js            ← CSV + XLSX serialization
+│   │   └── picklists.js           ← loader + accessor for picklists.json
+│   ├── ui/
+│   │   ├── header.js
+│   │   ├── stepIndicator.js
+│   │   ├── nav.js
+│   │   ├── step1-upload.js
+│   │   ├── step2-mapping.js
+│   │   ├── step3-settings.js
+│   │   ├── step4-review.js
+│   │   └── step5-export.js
+│   └── util/
+│       ├── dom.js
+│       ├── date-utils.js
+│       └── csv.js
+├── vendor/                        ← optional local copies for offline / CSP-strict deploys
+│   ├── xlsx.full.min.js
+│   └── fuse.min.js
+├── assets/
+│   ├── icons/
+│   └── fonts/
+└── README.md
+```
 
-### 2.3 Why Not Other Stacks?
-- **Vue/Svelte:** Both viable, but React has the largest internal talent pool at Progress.
-- **Next.js:** Overkill for a client-only app; adds SSR complexity not needed here.
-- **Python + Flask:** Not suitable for client-side execution; would require always-on server.
-- **Vanilla JS:** Workable but harder to maintain as features grow (wizard state, complex validation, large data grid).
+**Deliberately absent:** `package.json`, `package-lock.json`, `node_modules/`, `vite.config.*`, `tsconfig.json`, `.babelrc`, `webpack.*`. If any of these files appear in the repo, that is a violation of NFR-3.
+
+#### 2.3 Why Not These Stacks?
+- **React / Vue / Svelte / Angular:** All require an NPM install and a build step. **Excluded by NFR-3.**
+- **Next.js / Nuxt / SvelteKit:** Same — Node required.
+- **Vanilla JS with a bundler (Vite / esbuild / Rollup):** Still Node. **Excluded.**
+- **Server-side (Python Flask, .NET):** Would require always-on server + auth; overkill and moves PII to server.
 
 ---
 
-## 3. Data Flow
+### 3. Data Flow
 
-### 3.1 End-to-End Pipeline
-
+#### 3.1 End-to-End Pipeline
 ```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│ 1. UPLOAD    │───▶│ 2. PARSE     │───▶│ 3. MAP       │───▶│ 4. ENRICH    │
-│              │    │              │    │              │    │              │
-│ User drops   │    │ SheetJS      │    │ Fuzzy match  │    │ Apply batch  │
-│ files        │    │ reads files  │    │ source cols  │    │ values (per  │
-│              │    │ → JSON arrays│    │ → template   │    │ file)        │
-└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
-                                                                    │
-                                                                    ▼
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│ 8. DOWNLOAD  │◀───│ 7. SERIALIZE │◀───│ 6. EDIT      │◀───│ 5. VALIDATE  │
-│              │    │              │    │              │    │              │
-│ Browser      │    │ SheetJS      │    │ User reviews │    │ Email,       │
-│ saves file   │    │ writes CSV   │    │ + inline     │    │ duplicates,  │
-│              │    │ / XLSX       │    │ edits        │    │ required,    │
-│              │    │              │    │              │    │ SFDC ID, etc.│
-└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+[1. UPLOAD] -> [2. PARSE] -> [3. MAP] -> [4. ENRICH]
+                                                |
+                                                v
+[8. DOWNLOAD] <- [7. SERIALIZE] <- [6. EDIT] <- [5. VALIDATE]
 ```
 
-### 3.2 In-Memory Data Model
+Validation covers: required, email format, SFDC ID length, picklist conformance, Force MQL/MAL exclusivity, cross-file duplicate emails (warning), and **new** cross-file `(email, Product)` duplicates (error).
 
-```typescript
-// Per-file state
-interface SourceFile {
-  id: string;                          // UUID
-  fileName: string;
-  rowCount: number;
-  sourceColumns: string[];             // Original column headers from file
-  rawRows: Record<string, string>[];   // Raw data, keyed by source column
-  columnMapping: Record<string, string | null>;  // sourceCol → templateCol (or null if ignored)
-  batchSettings: BatchSettings;        // Per-file batch values
-}
+#### 3.2 In-Memory Data Model (plain JS, JSDoc-typed)
+```js
+/**
+ * @typedef {Object} SourceFile
+ * @property {string} id
+ * @property {string} fileName
+ * @property {number} rowCount
+ * @property {string[]} sourceColumns
+ * @property {Object<string,string>[]} rawRows
+ * @property {Object<string,string|null>} columnMapping
+ * @property {BatchSettings} batchSettings
+ */
 
-interface BatchSettings {
-  LAST_RESPONSE_DATE: string;          // ISO date
-  CAMPAIGN_SOURCE: string;
-  LEAD_SOURCE_INITIAL: string;
-  LEAD_SOURCE_MOST_RECENT: string;
-  PRODUCT: string;
-  CALL_TO_ACTION: string;
-  TARGET_CHANNEL_TYPE: string;
-  CAMPAIGN_MEMBER_STATUS: string;
-  SFDC_CAMPAIGN_ID: string;            // Must be 18 chars
-  utm_medium: string;
-  utm_source: string;
-  utm_campaign: string;
-  OFFER_TITLE: string;
-  FORCE_MQL: boolean;
-  FORCE_MAL: boolean;
-  LEAD_OWNER: string;                  // Default: "Queue - Auto-Nurture"
-}
+/**
+ * @typedef {Object} BatchSettings
+ * @property {string}  LastResponseDate
+ * @property {string}  CampaignSource
+ * @property {string}  LeadSourceInitial
+ * @property {string}  LeadSourceMostRecent
+ * @property {string}  Product
+ * @property {string}  CallToAction
+ * @property {string}  TargetChannelType
+ * @property {string}  CampaignMemberStatus
+ * @property {string}  SfdcCampaignId
+ * @property {string}  utm_medium
+ * @property {string}  utm_source
+ * @property {string}  utm_campaign
+ * @property {string}  OfferTitle
+ * @property {boolean} ForceMQL
+ * @property {boolean} ForceMAL
+ * @property {string}  ExternalAssetStatus
+ * @property {string}  LeadOwnerId
+ * @property {boolean} ManualLeadAssignment    // auto-true when LeadOwnerId non-empty
+ * @property {boolean} BypassBogusProgram
+ */
 
-// Combined processed state
-interface ProcessedRow {
-  sourceFileId: string;
-  rowIndex: number;                    // Original row in source file
-  data: Record<TemplateColumn, string>; // All 38 template columns
-  validations: ValidationResult[];
-  isDuplicate: boolean;
-}
-
-interface ValidationResult {
-  field: string;
-  severity: "error" | "warning";
-  message: string;
-}
+/**
+ * @typedef {Object} ProcessedRow
+ * @property {string} sourceFileId
+ * @property {number} rowIndex
+ * @property {Object<string,string|boolean>} data
+ * @property {ValidationResult[]} validations
+ * @property {boolean} isDuplicate                     // duplicate email (any product)
+ * @property {boolean} isDuplicateWithinProduct        // duplicate (email + Product) - ERROR
+ */
 ```
 
-### 3.3 Wizard State Machine
-
-```typescript
-type WizardStep = 
-  | "upload"      // Step 1
-  | "mapping"     // Step 2
-  | "settings"    // Step 3
-  | "review"      // Step 4
-  | "export";     // Step 5
-
-interface WizardState {
-  currentStep: WizardStep;
-  completedSteps: Set<WizardStep>;
-  files: SourceFile[];
-  processedRows: ProcessedRow[];       // Computed from files + settings
-  outputFormat: "csv" | "xlsx";
-  outputFilename: string;
-}
+#### 3.3 Wizard State Machine
 ```
-
-State transitions are gated by step-level validators. The Back button always preserves state; the Next button runs the step's validator.
+type WizardStep = 'upload' | 'mapping' | 'settings' | 'review' | 'export';
+```
+State transitions are gated by step-level validators. The Back button preserves state; the Next button runs the step's validator.
 
 ---
 
-## 4. Core Modules
+### 4. Core Modules
 
-### 4.1 File Parser Module
-**Responsibility:** Parse uploaded files into normalized JSON arrays.
-
-- Accepts `File` objects from drag-drop or file picker
-- Uses SheetJS (`xlsx` library) to handle `.xlsx`, `.xls`, `.csv`
-- Auto-detects encoding (UTF-8, Latin-1, Windows-1252) for CSV files
-- Extracts the first row as headers
+#### 4.1 File Parser Module (`js/modules/parser.js`)
+- Uses SheetJS (global `XLSX`) to handle `.xlsx`, `.xls`, `.csv`
+- Auto-detects encoding for CSV files
 - Preserves international characters (diacritics)
-- Returns `{ sourceColumns: string[], rawRows: Record<string, string>[] }`
 - Handles errors: corrupt files, empty files, files exceeding size limits
 
-### 4.2 Fuzzy Matcher Module
-**Responsibility:** Auto-map source columns to template columns.
+#### 4.2 Fuzzy Matcher Module (`js/modules/fuzzy.js`)
+- Uses Fuse.js (global `Fuse`) with a similarity threshold (default 0.4)
+- Loads synonym dictionary from `picklists.json → columnSynonyms`
+- Returns `Map<sourceColumn, { templateColumn: string|null, confidence: number }>`
 
-- Uses Fuse.js with a configurable similarity threshold (default 0.4)
-- Maintains a **synonym dictionary** for each template column:
-
-```typescript
-const COLUMN_SYNONYMS: Record<TemplateColumn, string[]> = {
-  "FIRST NAME":   ["first", "fname", "firstname", "first name", "given name", "givenname"],
-  "LAST NAME":    ["last", "lname", "lastname", "last name", "surname", "family name"],
-  "EMAIL ADDRESS":["email", "e-mail", "email address", "mail", "emailaddress"],
-  "COMPANY NAME": ["company", "organization", "org", "account", "employer", "company name"],
-  "COUNTRY (use drop down menu)": ["country", "nation", "country/region"],
-  "BUSINESS PHONE": ["phone", "telephone", "tel", "business phone", "work phone", "mobile"],
-  "Title":        ["title", "job title", "position", "role", "jobtitle"],
-  // ... full mapping for all auto-mappable columns
-};
-```
-
-- Returns: `Map<sourceColumn, { templateColumn: string | null, confidence: number }>`
-- Confidence levels: High (≥0.8), Medium (0.6–0.79), Low (0.4–0.59), No Match (<0.4)
-
-### 4.3 Country Standardizer Module
-**Responsibility:** Map source country values to the approved picklist.
-
-- Built-in alias map for common variants (US → USA, UK → United Kingdom, etc.)
-- For unmapped values, applies fuzzy matching against the 248-value picklist
+#### 4.3 Country Standardizer Module (`js/modules/country.js`)
+- Alias map loaded from `picklists.json → countryAliases`
+- For unmapped values, fuzzy matches against the Country picklist
 - Flags unmappable values as validation errors
 
-### 4.4 Validation Engine
-**Responsibility:** Apply all validation rules and produce per-row results.
-
+#### 4.4 Validation Engine (`js/modules/validator.js`)
 Validation rules (run in order):
-1. **Whitespace trim** — strip leading/trailing whitespace from all fields
-2. **Name cleanup** — remove leading special chars from FIRST NAME / LAST NAME
-3. **Casing normalization** — `YEs`/`YES`/`yes` → `Yes` for Force MQL/MAL
-4. **Country standardization** — map variants to picklist
-5. **Required field check** — all required fields must be non-empty
-6. **Email format check** — must match `^[^\s@]+@[^\s@]+\.[^\s@]+$`
-7. **SFDC Campaign ID check** — must be exactly 18 characters
-8. **Picklist conformance** — Country, Product, Lead Source, CTA, Channel, Campaign Member Status, utm_medium must match picklists
-9. **Force MQL/MAL mutual exclusivity** — both cannot be "Yes" on same row
-10. **Duplicate detection** — flag rows with duplicate emails across ALL files (case-insensitive)
+1. Whitespace trim
+2. Name cleanup
+3. **Checkbox coercion** — legacy "yes/YEs/YES" values coerced to `true`
+4. Country standardization
+5. Required field check
+6. Email format check
+7. SFDC Campaign ID = 18 chars
+8. Picklist conformance
+9. Force MQL / MAL mutual exclusivity
+10. Duplicate email detection (warning; email only)
+11. **Email + Product uniqueness (NEW; error)** — multiple rows sharing `(lowercased_email, Product)` all flagged as errors
 
-Returns an array of `ValidationResult` objects per row, plus a global summary.
-
-### 4.5 Export Module
-**Responsibility:** Serialize processed rows to CSV or XLSX.
-
+#### 4.5 Export Module (`js/modules/exporter.js`)
 - Uses SheetJS to write output
-- CSV: UTF-8 with BOM (`\uFEFF` prefix) for Excel compatibility
-- Column order: exactly matches template schema (columns 1–38)
-- Empty/optional columns included as empty columns (never omitted)
+- CSV: UTF-8 with BOM
+- Column order matches template schema (columns 1–37)
+- **Checkbox → string serialization:** `true` → `"Yes"`, `false` → `""` (blank) for Force MQL, Force MAL, Manual Lead Assignment, Bypass Bogus Program
 - Filename: `[CampaignSource]_upload_[YYYY-MM-DD].[csv|xlsx]`
-  - Multi-campaign uploads use `multi-campaign` prefix
-- Triggers browser download via Blob + `URL.createObjectURL`
+
+#### 4.6 Picklist Module (`js/modules/picklists.js`) — NEW
+- On app start, `fetch('./picklists.json')`
+- Validate against schema (§5)
+- Cache in memory; expose accessors like `getPicklist('Product')`, `getSynonyms('Email Address')`, `getCountryAliases()`
+- On fetch failure or schema violation, render blocking error modal
 
 ---
 
-## 5. Component Architecture (React)
+### 5. `picklists.json` Schema (NEW in v1.1)
 
-### 5.1 Component Tree
-
+```json
+{
+  "picklists": {
+    "Country":                   ["Afghanistan", "Aland Islands", "..."],
+    "Product":                   ["Agentic RAG", "ALM Testing", "..."],
+    "Lead Source - Initial":     ["Added by Sales Rep", "..."],
+    "Lead Source - Most Recent": ["Added by Sales Rep", "..."],
+    "Call to Action":            ["Analyst Report", "..."],
+    "Target Channel Type":       ["Direct", "OEM", "AP", "SI", "Reseller", "ISV", "Partner"],
+    "Campaign Member Status":    ["Submitted", "Attended", "..."],
+    "utm_medium":                ["content-paid", "cpc", "..."]
+  },
+  "columnSynonyms": {
+    "First Name":    ["first", "fname", "firstname", "first name", "given name"],
+    "Last Name":     ["last",  "lname", "lastname",  "last name",  "surname"],
+    "Email Address": ["email", "e-mail", "email address", "mail"],
+    "Company Name":  ["company", "organization", "org", "account"],
+    "Country":       ["country", "nation", "country/region"]
+  },
+  "countryAliases": {
+    "USA":                                   ["US", "U.S.", "U.S.A.", "United States", "United States of America"],
+    "United Kingdom":                        ["UK", "Britain", "Great Britain", "England"],
+    "Korea Republic of":                     ["South Korea"],
+    "Korea Democratic People's Republic of": ["North Korea"],
+    "Viet Nam":                              ["Vietnam"],
+    "Taiwan-China":                          ["Taiwan"],
+    "Russian Federation":                    ["Russia"]
+  }
+}
 ```
-<App>
-├── <AppHeader />                    // Progress brand nav
-├── <StepIndicator />                // 5-step wizard progress bar
-├── <WizardRouter>                   // Routes to current step component
-│   ├── <Step1Upload />              // Drag-drop, file list
-│   ├── <Step2Mapping />             // Per-file column mapping UI
-│   │   └── <FileMappingPanel />     // Repeated per file
-│   ├── <Step3Settings />            // Per-file campaign settings
-│   │   └── <BatchSettingsForm />    // Repeated per file (tabs)
-│   ├── <Step4Review />              // Combined data grid + validation
-│   │   ├── <ValidationSummary />
-│   │   └── <DataGrid />             // TanStack Table
-│   └── <Step5Export />              // Format select + download
-├── <NavigationFooter />             // Back / Next buttons
-└── <AppFooter />                    // Progress footer
-```
 
-### 5.2 State Management Strategy
+**Editing workflow (Marketing Ops):**
+1. Open `picklists.json` in any text editor or via SharePoint check-out.
+2. Add/remove/rename picklist values.
+3. Save. Commit to the deploy target.
+4. Refresh the browser. Changes are live.
 
-Use **Zustand** stores split by concern:
+**Validation on load:**
+- Root object has `picklists`, `columnSynonyms`, `countryAliases`
+- Each picklist value is a non-empty string
+- No duplicate values within a picklist (case-insensitive)
+- All required picklists are present
 
-```typescript
-// wizardStore.ts — wizard navigation + completed steps
-useWizardStore: {
-  currentStep, completedSteps,
-  goNext(), goBack(), goToStep(step), startOver()
-}
+---
 
-// filesStore.ts — uploaded files + parsed data
-useFilesStore: {
-  files: SourceFile[],
-  addFile(file), removeFile(id),
-  updateMapping(fileId, mapping),
-  updateBatchSettings(fileId, settings)
-}
+### 6. Component Architecture (Vanilla JS, no framework)
 
-// processedStore.ts — derived state (computed from filesStore)
-useProcessedStore: {
-  processedRows: ProcessedRow[],
-  validationSummary: ValidationSummary,
-  updateRow(rowId, field, value),
-  deleteRow(rowId)
-}
+Each "component" is a JS module exporting a `mount(rootEl, props)` and `unmount()` function. Views subscribe to the store; the store notifies subscribers on change.
 
-// uiStore.ts — UI preferences
-useUIStore: {
-  theme: "light" | "dark",
-  toggleTheme()
-}
+```js
+// js/store.js - tiny pub-sub store, no dependencies
+export const store = (() => {
+  const target = new EventTarget();
+  let state = { /* WizardState + sub-slices */ };
+  return {
+    get: () => state,
+    set: (patch) => {
+      state = { ...state, ...patch };
+      target.dispatchEvent(new CustomEvent('change', { detail: state }));
+    },
+    subscribe: (fn) => {
+      const h = (e) => fn(e.detail);
+      target.addEventListener('change', h);
+      return () => target.removeEventListener('change', h);
+    }
+  };
+})();
 ```
 
 ---
 
-## 6. Multi-File Merge Logic
-
-### 6.1 Per-File State
-Each uploaded file maintains its own:
-- Column mapping
-- Batch settings (Product, Campaign, SFDC ID, etc.)
-
-### 6.2 Combined Output
-At the Review step, processed rows from all files are combined into a single array. Each row carries the batch settings from its source file, but can be overridden individually at the row level.
-
-### 6.3 Duplicate Detection Scope
-Duplicates are detected **across all files in the session** (not per-file). The email address (lowercased, trimmed) is the unique key.
-
-### 6.4 Filename Logic
-- If all files share the same `CAMPAIGN_SOURCE` → use that value
-- If files have different Campaign Sources → use `multi-campaign`
-- User can override the filename before download
+### 7. Multi-File Merge Logic
+- **Per-file state:** each file has its own column mapping + batch settings (including checkbox defaults)
+- **Combined output:** all files merged into a single processed row array
+- **Duplicate email (warning):** detected across all files (lowercased + trimmed)
+- **Email + Product duplicate (error):** detected across all files using the pair `(lowercased_email, Product)`
+- **Filename:** if all files share the same Campaign Source use that; otherwise `multi-campaign`; user can override
 
 ---
 
-## 7. Validation Engine Details
+### 8. Validation Engine Details
 
-### 7.1 Validation Flow
-
+#### 8.1 Validation Flow
 ```
 For each ProcessedRow:
-  1. Apply transformations (trim, name cleanup, casing)
+  1. Apply transformations (trim, name cleanup, checkbox coercion)
   2. Apply standardizations (country mapping)
-  3. Run validators in parallel:
+  3. Run per-row validators:
      - RequiredFieldValidator
      - EmailFormatValidator
-     - SFDCIdValidator
-     - PicklistValidator (one per controlled field)
+     - SfdcIdValidator
+     - PicklistValidator
      - ForceMQL_MAL_ExclusivityValidator
-  4. Run cross-row validator:
-     - DuplicateEmailValidator (operates on full row set)
-  5. Aggregate results → row.validations[]
+  4. Run cross-row validators:
+     - DuplicateEmailValidator                 (warning; email only)
+     - DuplicateEmailWithinProductValidator    (ERROR; email + product)  <- NEW
+  5. Aggregate results -> row.validations[]
 ```
 
-### 7.2 Validation Result Severity
-- **Error (red):** Blocks export. Examples: missing required field, invalid email, SFDC ID ≠ 18 chars, duplicate email.
-- **Warning (yellow):** Allowed in export but flagged. Examples: country fuzzy-mapped (low confidence), name had special chars removed.
+#### 8.2 Severity
+- **Error:** blocks export. Missing required, invalid email, SFDC ID != 18, duplicate `(email, Product)`.
+- **Warning:** allowed but flagged. Country fuzzy-mapped (low confidence), duplicate email across different products, name cleanup applied.
 
-### 7.3 Export Gate
-The Export button is disabled when `validationSummary.errorCount > 0`. The Review step displays the list of errors with row numbers and clickable links to jump to the problem row.
+#### 8.3 Export Gate
+Export disabled when `errorCount > 0`. Review step shows clickable error list.
+
+#### 8.4 Manual Lead Assignment Auto-Check (NEW)
+The validation engine watches Lead Owner ID edits at both batch and row levels. When a non-empty Lead Owner ID is set:
+- If Manual Lead Assignment for that row/batch is currently `false` **and** the user did not manually uncheck it in this session, set it to `true` and emit a warning `"Manual Lead Assignment was auto-checked because Lead Owner ID is populated."`
+- If the user unchecks Manual Lead Assignment while Lead Owner ID is populated, respect that choice (a `manuallyOverridden` flag is set).
 
 ---
 
-## 8. Future Backend Integration Points
-
-If a backend is added later, these are the natural integration seams:
+### 9. Future Backend Integration Points
 
 | Feature | Integration Point | Endpoint Example |
 |---|---|---|
-| Saved mapping profiles | After Step 2, save current mapping; restore on Step 1 | `POST /api/profiles`, `GET /api/profiles/:vendor` |
-| Audit log | After successful export, log filename, row count, user, timestamp | `POST /api/audit/upload` |
-| Direct Eloqua upload | After Step 5, push file to Eloqua REST API | `POST /api/eloqua/upload` |
-| Picklist management | Replace hardcoded picklists with fetched values | `GET /api/picklists` |
-| User auth | Wrap app in Entra ID SSO | OAuth2/OIDC middleware |
-
-The client-side processing engine remains unchanged in all these scenarios — the backend only handles persistence, integration, and auth.
+| Saved mapping profiles | After Step 2, save/restore mapping | `POST /api/profiles`, `GET /api/profiles/:vendor` |
+| Audit log | After successful export | `POST /api/audit/upload` |
+| Direct Eloqua upload | After Step 5 | `POST /api/eloqua/upload` |
+| Picklist management | Serve `picklists.json` from admin-editable backend | `GET /api/picklists`, `PUT /api/picklists` |
+| User auth | Wrap in Entra ID SSO | OAuth2/OIDC middleware |
 
 ---
 
-## 9. Error Handling
-
-### 9.1 File Upload Errors
-- Unsupported file type → toast: "Only .xlsx, .xls, and .csv files are supported"
-- File too large → toast: "File exceeds 10MB limit"
-- Corrupt file → toast: "Could not read file. Please verify the file is not corrupted"
-- Encoding error → fallback to Latin-1, surface warning to user
-
-### 9.2 Validation Errors
-- Inline (per cell) → red border, tooltip with error message
-- Summary panel → grouped list of errors with row links
-- Step-level → block Next button, surface count in step indicator badge
-
-### 9.3 Export Errors
-- Validation errors present → modal: "Fix N errors before exporting"
-- Browser download fails → toast: "Download failed. Try a different browser or check pop-up settings"
+### 10. Error Handling
+- **File upload:** unsupported type, too large, corrupt, encoding — surfaced as toasts
+- **Validation errors:** inline (red border + tooltip), summary panel, step-level badge
+- **Export errors:** modal listing errors
+- **Picklist load errors (NEW):** blocking modal with instructions to Marketing Ops for missing, malformed, or schema-violating `picklists.json`
 
 ---
 
-## 10. Performance Considerations
-
-- **Large files (5k+ rows):** Use Web Workers for parsing/validation to keep UI responsive
-- **Data grid:** Use TanStack Table's virtualization to render only visible rows
-- **Reactivity:** Memoize derived state (processedRows, validationSummary) using Zustand selectors
-- **Lazy loading:** Code-split each wizard step into a separate chunk
-
----
-
-## 11. Security & Compliance
-
-- **No PII transmission:** v1 processes all data client-side. No analytics or telemetry that captures row content.
-- **No persistence:** App state cleared on browser refresh (intentional — no risk of stale lead data).
-- **CSP headers:** Strict Content Security Policy when hosted (no inline scripts, no eval).
-- **Future SSO:** When backend is added, gate access via Entra ID (Progress corporate auth).
-- **Dependency security:** Run `npm audit` in CI; pin major versions.
+### 11. Performance Considerations
+- Large files (5k+ rows): parse in chunked loop with `requestIdleCallback` / `setTimeout` fallbacks
+- Data grid: custom virtualization renders only visible rows (~40 at a time) via `IntersectionObserver`
+- Store notifications batched (`store.batch(fn)`)
+- Each step view is a separate ES module `import()`-ed on demand
 
 ---
 
-## 12. Deployment
-
-### 12.1 v1 (Client-Only)
-- Build: `vite build` → static assets (HTML, JS, CSS) in `dist/`
-- Deploy options:
-  - **Azure Static Web Apps** (recommended for Progress alignment)
-  - Internal CDN / SharePoint
-  - Netlify / Vercel for prototyping
-- URL pattern: `https://tools.progress.com/list-formatter/` (or internal equivalent)
-
-### 12.2 Future Backend
-- Containerize Node API → Azure App Service
-- Database: Azure PostgreSQL Flexible Server (small instance)
-- CI/CD: Azure DevOps Pipelines or GitHub Actions
+### 12. Security & Compliance
+- **No PII transmission** in v1
+- **No persistence:** state cleared on refresh
+- **CSP headers:** strict CSP when hosted; prefer `/vendor/` local copies for `default-src 'self'`
+- **Dependency security:** no NPM = no transitive dependency tree. Vendor JS pinned by SHA-256 SRI hashes:
+  ```html
+  <script src="./vendor/xlsx.full.min.js"
+          integrity="sha256-..."
+          crossorigin="anonymous"></script>
+  ```
 
 ---
 
-## 13. Testing Strategy
+### 13. Deployment
+
+#### 13.1 v1.1 (Client-Only, No Build)
+- No build step. `dist/` = the repo folder itself.
+- Deploy options: Azure Static Web Apps (recommended), SharePoint, internal CDN, IIS virtual directory, Netlify/Vercel for prototyping.
+
+#### 13.2 Local "Development" (No NPM)
+- To serve locally without Node, use any of:
+  - `python -m http.server 8080`
+  - VS Code "Live Server" extension
+  - IIS Express
+  - `dotnet serve`
+- **Do not** use `npx serve`, `npm run dev`, or any Node-based tool.
+
+---
+
+### 14. Testing Strategy
 
 | Layer | Tool | Coverage Focus |
 |---|---|---|
-| Unit | Vitest | Validators, transformers, fuzzy matcher, country standardizer |
-| Component | React Testing Library | Step components, form interactions |
-| E2E | Playwright | Full wizard flow with sample files |
-| Visual | Chromatic / Storybook | Component states (errors, dark mode) |
+| Unit | Plain HTML test runner (`tests/index.html`) importing modules directly + `console.assert` | Validators, transformers, fuzzy matcher, country standardizer, checkbox coercion, email+product uniqueness |
+| Component | Manual scripted test cases in `tests/README.md` executed in-browser | Step components, form interactions |
+| E2E | Manual test scripts against deployed URL; optional Playwright on CI machine | Full wizard flow with sample files |
 
-Sample test files should include:
+Sample test files to maintain:
 - Single-file happy path
 - Multi-file with mixed Products
-- File with international characters (Jürgensen, Lörtsch)
-- File with duplicate emails
-- File with invalid SFDC IDs
-- File with country variants (US, UK, etc.)
+- International characters (Jürgensen, Lörtsch)
+- Duplicate emails, **same** Product → **error**
+- Duplicate emails, **different** Products → **warning** (not error)
+- Invalid SFDC IDs
+- Country variants (US, UK, etc.)
+- Lead Owner ID populated but Manual Lead Assignment unchecked → verify auto-check
+- Bypass Bogus Program checkbox toggled → verify export contains literal "Yes"
