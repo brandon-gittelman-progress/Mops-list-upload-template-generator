@@ -1,0 +1,1 @@
+export function todayIso(){return new Date().toISOString().slice(0,10)}export function toInputDate(v){if(!v)return"";const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toISOString().slice(0,10)}

@@ -1,0 +1,62 @@
+/* Header readability + Step 4 alignment hotfix */
+.app-header .header-btn,
+.app-header .btn,
+.app-header button{
+  color:#FFFFFF;
+  border-color:rgba(255,255,255,.75);
+  background:rgba(255,255,255,.08);
+}
+
+.app-header .header-btn:hover,
+.app-header .btn:hover,
+.app-header button:hover{
+  background:rgba(255,255,255,.16);
+  border-color:#FFFFFF;
+  color:#FFFFFF;
+}
+
+.app-header .header-btn:focus-visible,
+.app-header .btn:focus-visible,
+.app-header button:focus-visible{
+  outline:3px solid var(--progress-green);
+  outline-offset:2px;
+}
+
+.settings-fields-three{
+  align-items:start;
+}
+
+.settings-fields-three .settings-field{
+  grid-template-rows:auto 44px 18px;
+  align-content:start;
+}
+
+.settings-fields-three .settings-field input,
+.settings-fields-three .settings-field select{
+  height:44px;
+}
+
+.settings-fields-three .settings-field small{
+  display:block;
+  min-height:18px;
+  line-height:18px;
+  margin-top:4px;
+}
+
+.settings-fields-three .settings-field:not(:has(small))::after{
+  content:"";
+  min-height:18px;
+  display:block;
+}
+
+/* Fallback for browsers without :has support: keep helper text from shifting neighboring fields. */
+@supports not selector(:has(*)){
+  .settings-fields-three .settings-field::after{
+    content:"";
+    min-height:18px;
+    display:block;
+  }
+  .settings-fields-three .settings-field small + *{
+    display:none;
+  }
+}

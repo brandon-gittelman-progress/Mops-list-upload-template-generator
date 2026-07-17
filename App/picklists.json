@@ -1,0 +1,2246 @@
+{
+  "$schema": "https://progress.internal/schemas/list-upload-formatter/picklists-v1.3.json",
+  "$version": "1.3",
+  "$lastUpdated": "2026-07-07",
+  "$note": "Progress List Upload Formatter picklists file. Edit the arrays below to update picklists, column synonyms, country aliases, or state aliases. No code changes required — just refresh the app. See architecture.md §5 for schema. Product/Lead Source/CTA/Channel/Campaign Member Status values are representative — replace with your exact Eloqua/SFDC picklist values.",
+  "picklists": {
+    "Country": [
+      "Afghanistan",
+      "Albania",
+      "Algeria",
+      "American Samoa",
+      "Andorra",
+      "Angola",
+      "Anguilla",
+      "Antarctica",
+      "Antigua and Barbuda",
+      "Argentina",
+      "Armenia",
+      "Aruba",
+      "Australia",
+      "Austria",
+      "Azerbaijan",
+      "Bahamas",
+      "Bahrain",
+      "Bangladesh",
+      "Barbados",
+      "Belarus",
+      "Belgium",
+      "Belize",
+      "Benin",
+      "Bermuda",
+      "Bhutan",
+      "Bolivia",
+      "Bosnia and Herzegovina",
+      "Botswana",
+      "Bouvet Island",
+      "Brazil",
+      "British Indian Ocean Territory",
+      "Brunei",
+      "Bulgaria",
+      "Burkina Faso",
+      "Burundi",
+      "Cabo Verde",
+      "Cambodia",
+      "Cameroon",
+      "Canada",
+      "Cayman Islands",
+      "Central African Republic",
+      "Chad",
+      "Chile",
+      "China",
+      "Christmas Island",
+      "Cocos (Keeling) Islands",
+      "Colombia",
+      "Comoros",
+      "Congo",
+      "Congo (Democratic Republic)",
+      "Cook Islands",
+      "Costa Rica",
+      "Croatia",
+      "Cuba",
+      "Curaçao",
+      "Cyprus",
+      "Czech Republic",
+      "Denmark",
+      "Djibouti",
+      "Dominica",
+      "Dominican Republic",
+      "Ecuador",
+      "Egypt",
+      "El Salvador",
+      "Equatorial Guinea",
+      "Eritrea",
+      "Estonia",
+      "Eswatini",
+      "Ethiopia",
+      "Falkland Islands",
+      "Faroe Islands",
+      "Fiji",
+      "Finland",
+      "France",
+      "French Guiana",
+      "French Polynesia",
+      "Gabon",
+      "Gambia",
+      "Georgia",
+      "Germany",
+      "Ghana",
+      "Gibraltar",
+      "Greece",
+      "Greenland",
+      "Grenada",
+      "Guadeloupe",
+      "Guam",
+      "Guatemala",
+      "Guernsey",
+      "Guinea",
+      "Guinea-Bissau",
+      "Guyana",
+      "Haiti",
+      "Honduras",
+      "Hong Kong",
+      "Hungary",
+      "Iceland",
+      "India",
+      "Indonesia",
+      "Iran",
+      "Iraq",
+      "Ireland",
+      "Isle of Man",
+      "Israel",
+      "Italy",
+      "Ivory Coast",
+      "Jamaica",
+      "Japan",
+      "Jersey",
+      "Jordan",
+      "Kazakhstan",
+      "Kenya",
+      "Kiribati",
+      "Kosovo",
+      "Kuwait",
+      "Kyrgyzstan",
+      "Laos",
+      "Latvia",
+      "Lebanon",
+      "Lesotho",
+      "Liberia",
+      "Libya",
+      "Liechtenstein",
+      "Lithuania",
+      "Luxembourg",
+      "Macao",
+      "Madagascar",
+      "Malawi",
+      "Malaysia",
+      "Maldives",
+      "Mali",
+      "Malta",
+      "Marshall Islands",
+      "Martinique",
+      "Mauritania",
+      "Mauritius",
+      "Mayotte",
+      "Mexico",
+      "Micronesia",
+      "Moldova",
+      "Monaco",
+      "Mongolia",
+      "Montenegro",
+      "Montserrat",
+      "Morocco",
+      "Mozambique",
+      "Myanmar",
+      "Namibia",
+      "Nauru",
+      "Nepal",
+      "Netherlands",
+      "New Caledonia",
+      "New Zealand",
+      "Nicaragua",
+      "Niger",
+      "Nigeria",
+      "Niue",
+      "Norfolk Island",
+      "North Korea",
+      "North Macedonia",
+      "Northern Mariana Islands",
+      "Norway",
+      "Oman",
+      "Pakistan",
+      "Palau",
+      "Palestine",
+      "Panama",
+      "Papua New Guinea",
+      "Paraguay",
+      "Peru",
+      "Philippines",
+      "Pitcairn",
+      "Poland",
+      "Portugal",
+      "Puerto Rico",
+      "Qatar",
+      "Romania",
+      "Russia",
+      "Rwanda",
+      "Réunion",
+      "Saint Barthélemy",
+      "Saint Helena",
+      "Saint Kitts and Nevis",
+      "Saint Lucia",
+      "Saint Martin",
+      "Saint Pierre and Miquelon",
+      "Saint Vincent and the Grenadines",
+      "Samoa",
+      "San Marino",
+      "Sao Tome and Principe",
+      "Saudi Arabia",
+      "Senegal",
+      "Serbia",
+      "Seychelles",
+      "Sierra Leone",
+      "Singapore",
+      "Sint Maarten",
+      "Slovakia",
+      "Slovenia",
+      "Solomon Islands",
+      "Somalia",
+      "South Africa",
+      "South Korea",
+      "South Sudan",
+      "Spain",
+      "Sri Lanka",
+      "Sudan",
+      "Suriname",
+      "Sweden",
+      "Switzerland",
+      "Syria",
+      "Taiwan",
+      "Tajikistan",
+      "Tanzania",
+      "Thailand",
+      "Timor-Leste",
+      "Togo",
+      "Tokelau",
+      "Tonga",
+      "Trinidad and Tobago",
+      "Tunisia",
+      "Turkey",
+      "Turkmenistan",
+      "Turks and Caicos Islands",
+      "Tuvalu",
+      "Uganda",
+      "Ukraine",
+      "United Arab Emirates",
+      "United Kingdom",
+      "United States",
+      "Uruguay",
+      "Uzbekistan",
+      "Vanuatu",
+      "Vatican City",
+      "Venezuela",
+      "Vietnam",
+      "Virgin Islands (British)",
+      "Virgin Islands (U.S.)",
+      "Wallis and Futuna",
+      "Western Sahara",
+      "Yemen",
+      "Zambia",
+      "Zimbabwe"
+    ],
+    "Product": [
+      "OpenEdge",
+      "Sitefinity",
+      "Kemp LoadMaster",
+      "Chef",
+      "MOVEit",
+      "WhatsUp Gold",
+      "Kendo UI",
+      "Telerik",
+      "DataDirect",
+      "Corticon",
+      "MarkLogic",
+      "Semaphore",
+      "Flowmon",
+      "ShareFile",
+      "Progress Software",
+      "Fiddler",
+      "NativeChat",
+      "Test Studio"
+    ],
+    "Lead Source - Initial": [
+      "Web Form",
+      "Content Syndication",
+      "Event - Trade Show",
+      "Event - Webinar",
+      "Event - Progress-Hosted",
+      "Partner Referral",
+      "List Purchase",
+      "Cold Outbound",
+      "Inbound Chat",
+      "Search - Paid",
+      "Search - Organic",
+      "Social - Paid",
+      "Social - Organic",
+      "Email Nurture",
+      "Other"
+    ],
+    "Lead Source - Most Recent": [
+      "Web Form",
+      "Content Syndication",
+      "Event - Trade Show",
+      "Event - Webinar",
+      "Event - Progress-Hosted",
+      "Partner Referral",
+      "List Purchase",
+      "Cold Outbound",
+      "Inbound Chat",
+      "Search - Paid",
+      "Search - Organic",
+      "Social - Paid",
+      "Social - Organic",
+      "Email Nurture",
+      "Other"
+    ],
+    "Call to Action": [
+      "Attend Webinar",
+      "Attend Event",
+      "Book Meeting",
+      "Contact Sales",
+      "Download Ebook",
+      "Download Whitepaper",
+      "Download Case Study",
+      "Download Report",
+      "Free Trial",
+      "Live Demo",
+      "Newsletter Signup",
+      "Product Info Request",
+      "Register - Event",
+      "Register - Webinar",
+      "Request Quote",
+      "Schedule Consultation",
+      "View Video",
+      "Watch Demo",
+      "Watch Webinar",
+      "Other"
+    ],
+    "Target Channel Type": [
+      "Email",
+      "Web",
+      "Event",
+      "Social",
+      "Paid Media",
+      "Partner",
+      "Direct"
+    ],
+    "Campaign Member Status": [
+      "Sent",
+      "Responded",
+      "Attended",
+      "Registered",
+      "No Show",
+      "Engaged",
+      "Downloaded",
+      "Requested Info",
+      "Contacted",
+      "Unqualified"
+    ],
+    "utm_medium": [
+      "email",
+      "cpc",
+      "cpm",
+      "display",
+      "social",
+      "social-paid",
+      "social-organic",
+      "referral",
+      "affiliate",
+      "banner",
+      "video",
+      "content-syndication",
+      "webinar",
+      "event",
+      "trade-show",
+      "direct-mail",
+      "print",
+      "podcast",
+      "sponsored-content",
+      "influencer",
+      "partner",
+      "sms",
+      "push"
+    ]
+  },
+  "columnSynonyms": {
+    "Last Response Date": [
+      "last response date",
+      "response date",
+      "last activity date",
+      "last_response_date",
+      "LAST RESPONSE DATE",
+      "Last Response",
+      "date de réponse",
+      "antwortdatum",
+      "fecha de respuesta",
+      "reactiedatum"
+    ],
+    "First Name": [
+      "first",
+      "fname",
+      "firstname",
+      "first name",
+      "given name",
+      "first_name",
+      "FIRST NAME",
+      "First",
+      "givenName",
+      "prénom",
+      "prenom",
+      "Prénom",
+      "vorname",
+      "Vorname",
+      "nombre",
+      "Nombre",
+      "voornaam",
+      "Voornaam"
+    ],
+    "Last Name": [
+      "last",
+      "lname",
+      "lastname",
+      "last name",
+      "surname",
+      "family name",
+      "last_name",
+      "LAST NAME",
+      "Last",
+      "familyName",
+      "nom",
+      "Nom",
+      "nom de famille",
+      "nachname",
+      "Nachname",
+      "familienname",
+      "apellido",
+      "Apellido",
+      "apellidos",
+      "achternaam",
+      "Achternaam"
+    ],
+    "Email Address": [
+      "email",
+      "e-mail",
+      "email address",
+      "mail",
+      "emailaddress",
+      "email_address",
+      "EMAIL ADDRESS",
+      "Email",
+      "E-Mail",
+      "courriel",
+      "Courriel",
+      "adresse électronique",
+      "adresse courriel",
+      "e-mail-adresse",
+      "E-Mail-Adresse",
+      "mailadresse",
+      "correo electrónico",
+      "Correo electrónico",
+      "correo",
+      "dirección de correo",
+      "e-mailadres",
+      "E-mailadres",
+      "emailadres"
+    ],
+    "Company Name": [
+      "company",
+      "organization",
+      "org",
+      "account",
+      "company name",
+      "employer",
+      "organisation",
+      "company_name",
+      "COMPANY NAME",
+      "Company",
+      "société",
+      "Société",
+      "entreprise",
+      "Entreprise",
+      "nom de société",
+      "firma",
+      "Firma",
+      "unternehmen",
+      "Unternehmen",
+      "firmenname",
+      "empresa",
+      "Empresa",
+      "compañía",
+      "nombre de empresa",
+      "bedrijf",
+      "bedrijfsnaam",
+      "Bedrijfsnaam"
+    ],
+    "Address 1": [
+      "address",
+      "address 1",
+      "address1",
+      "street",
+      "street address",
+      "address_1",
+      "addr1",
+      "ADDRESS 1",
+      "Address",
+      "adresse",
+      "adresse 1",
+      "straße",
+      "strasse",
+      "dirección",
+      "direccion",
+      "adres",
+      "straat"
+    ],
+    "City": [
+      "city",
+      "town",
+      "locality",
+      "CITY",
+      "ville",
+      "Ville",
+      "stadt",
+      "Stadt",
+      "ort",
+      "ciudad",
+      "Ciudad",
+      "localidad",
+      "stad",
+      "Stad",
+      "plaats"
+    ],
+    "State or Province": [
+      "state",
+      "province",
+      "state or province",
+      "region",
+      "state/province",
+      "state_or_province",
+      "STATE OR PROVINCE",
+      "State",
+      "département",
+      "région",
+      "bundesland",
+      "estado",
+      "provincia",
+      "provincie"
+    ],
+    "Zip or Postal Code": [
+      "zip",
+      "postal",
+      "postal code",
+      "zip code",
+      "postcode",
+      "zip or postal code",
+      "zip_or_postal_code",
+      "ZIP OR POSTAL CODE",
+      "Zip",
+      "Postal Code",
+      "code postal",
+      "postleitzahl",
+      "PLZ",
+      "código postal",
+      "codigo postal",
+      "CP"
+    ],
+    "Country": [
+      "country",
+      "nation",
+      "country/region",
+      "country or region",
+      "country_region",
+      "COUNTRY",
+      "COUNTRY (use drop down menu)",
+      "Country (use drop down menu)",
+      "pays",
+      "Pays",
+      "land",
+      "Land",
+      "país",
+      "pais",
+      "País"
+    ],
+    "Business Phone": [
+      "phone",
+      "business phone",
+      "telephone",
+      "tel",
+      "work phone",
+      "phone number",
+      "business_phone",
+      "BUSINESS PHONE",
+      "Business Phone",
+      "téléphone",
+      "Téléphone",
+      "tél",
+      "numéro de téléphone",
+      "telefon",
+      "Telefon",
+      "telefonnummer",
+      "teléfono",
+      "Teléfono",
+      "número de teléfono",
+      "telefoon",
+      "Telefoon",
+      "telefoonnummer"
+    ],
+    "Title": [
+      "title",
+      "job title",
+      "position",
+      "role",
+      "TITLE",
+      "Job Title",
+      "titre",
+      "Titre",
+      "poste",
+      "Poste",
+      "fonction",
+      "titel",
+      "Titel",
+      "Position",
+      "berufsbezeichnung",
+      "cargo",
+      "Cargo",
+      "puesto",
+      "título",
+      "functietitel",
+      "Functietitel",
+      "functie"
+    ],
+    "Industry": [
+      "industry",
+      "sector",
+      "vertical",
+      "INDUSTRY",
+      "secteur",
+      "Secteur",
+      "industrie",
+      "branche",
+      "Branche",
+      "industria",
+      "Industria",
+      "Sector"
+    ],
+    "Revenue": [
+      "revenue",
+      "annual revenue",
+      "sales",
+      "REVENUE",
+      "chiffre d'affaires",
+      "revenu",
+      "umsatz",
+      "jahresumsatz",
+      "ingresos",
+      "facturación",
+      "omzet",
+      "jaaromzet"
+    ],
+    "Employee Size": [
+      "employees",
+      "employee size",
+      "employee count",
+      "company size",
+      "headcount",
+      "employee_size",
+      "EMPLOYEE SIZE",
+      "nombre d'employés",
+      "effectif",
+      "mitarbeiterzahl",
+      "mitarbeiter",
+      "número de empleados",
+      "empleados",
+      "aantal werknemers",
+      "werknemers"
+    ],
+    "Electronic Message Opt Out": [
+      "opt out",
+      "email opt out",
+      "electronic message opt out",
+      "ELECTRONIC MESSAGE OPT OUT",
+      "unsubscribe",
+      "do not email",
+      "désabonner",
+      "abmelden",
+      "darse de baja",
+      "afmelden"
+    ],
+    "Opt In - Explicit Date": [
+      "opt in date",
+      "opt-in date",
+      "opt in - explicit date",
+      "OPT IN - EXPLICIT DATE",
+      "consent date",
+      "date de consentement",
+      "einwilligungsdatum",
+      "fecha de consentimiento",
+      "toestemmingsdatum"
+    ],
+    "Campaign Source": [
+      "campaign source",
+      "campaign",
+      "source",
+      "campaign_source",
+      "CAMPAIGN SOURCE",
+      "source de campagne",
+      "kampagnenquelle",
+      "fuente de campaña",
+      "campagnebron"
+    ],
+    "Lead Source - Initial": [
+      "lead source initial",
+      "lead source - initial",
+      "initial lead source",
+      "LEAD SOURCE - INITIAL",
+      "original source",
+      "source initiale du prospect",
+      "erste lead-quelle",
+      "fuente inicial del lead",
+      "initiële leadbron"
+    ],
+    "Lead Source - Most Recent": [
+      "lead source most recent",
+      "lead source - most recent",
+      "most recent lead source",
+      "LEAD SOURCE - MOST RECENT",
+      "latest source",
+      "source la plus récente",
+      "letzte lead-quelle",
+      "última fuente del lead",
+      "meest recente leadbron"
+    ],
+    "Product": [
+      "product",
+      "products",
+      "product line",
+      "product name",
+      "PRODUCT",
+      "PRODUCT (use drop down menu)",
+      "Product (use drop down menu)",
+      "produit",
+      "Produit",
+      "produkt",
+      "Produkt",
+      "producto",
+      "Producto"
+    ],
+    "Call to Action": [
+      "call to action",
+      "cta",
+      "CALL TO ACTION",
+      "Call To Action",
+      "Call-to-Action",
+      "appel à l'action",
+      "handlungsaufforderung",
+      "llamada a la acción",
+      "oproep tot actie"
+    ],
+    "Target Channel Type": [
+      "target channel",
+      "channel",
+      "channel type",
+      "target channel type",
+      "TARGET CHANNEL TYPE",
+      "type de canal",
+      "kanaltyp",
+      "tipo de canal",
+      "kanaaltype"
+    ],
+    "Form Comments": [
+      "comments",
+      "notes",
+      "form comments",
+      "lead comments",
+      "message",
+      "remarks",
+      "FORM COMMENTS",
+      "commentaires",
+      "remarques",
+      "kommentare",
+      "anmerkungen",
+      "comentarios",
+      "opmerkingen"
+    ],
+    "Offer Title": [
+      "offer",
+      "offer title",
+      "asset title",
+      "OFFER TITLE",
+      "titre de l'offre",
+      "angebotstitel",
+      "título de la oferta",
+      "aanbodtitel"
+    ],
+    "Website": [
+      "website",
+      "url",
+      "web",
+      "site",
+      "web site",
+      "WEBSITE",
+      "site web",
+      "site internet",
+      "webseite",
+      "sitio web"
+    ],
+    "Campaign Member Status": [
+      "campaign member status",
+      "member status",
+      "status",
+      "CAMPAIGN MEMBER STATUS",
+      "statut de membre de campagne",
+      "kampagnenmitgliedsstatus",
+      "estado del miembro de la campaña",
+      "campagnelidstatus"
+    ],
+    "SFDC Campaign ID": [
+      "sfdc campaign id",
+      "salesforce campaign id",
+      "campaign id",
+      "sfdc id",
+      "sfdcid",
+      "SFDC CAMPAIGN ID",
+      "Salesforce Campaign ID",
+      "id de campagne sfdc",
+      "sfdc-kampagnen-id",
+      "id de campaña sfdc",
+      "sfdc-campagne-id"
+    ],
+    "utm_medium": [
+      "utm medium",
+      "utm_medium",
+      "utmmedium",
+      "medium",
+      "UTM_MEDIUM",
+      "UTM Medium"
+    ],
+    "utm_source": [
+      "utm source",
+      "utm_source",
+      "utmsource",
+      "UTM_SOURCE",
+      "UTM Source"
+    ],
+    "utm_campaign": [
+      "utm campaign",
+      "utm_campaign",
+      "utmcampaign",
+      "UTM_CAMPAIGN",
+      "UTM Campaign"
+    ],
+    "Force MQL": [
+      "force mql",
+      "forcemql",
+      "FORCE MQL",
+      "force-mql"
+    ],
+    "Force MAL": [
+      "force mal",
+      "forcemal",
+      "FORCE MAL",
+      "force-mal"
+    ],
+    "External Asset Status": [
+      "external asset status",
+      "asset status",
+      "EXTERNAL ASSET STATUS"
+    ],
+    "Lead Owner ID": [
+      "lead owner id",
+      "owner id",
+      "salesforce owner id",
+      "LEAD OWNER ID",
+      "Lead Owner",
+      "LEAD OWNER"
+    ],
+    "Manual Lead Assignment": [
+      "manual lead assignment",
+      "manual assignment",
+      "MANUAL LEAD ASSIGNMENT"
+    ],
+    "Bypass Bogus Program": [
+      "bypass bogus program",
+      "bypass bogus",
+      "BYPASS BOGUS PROGRAM"
+    ]
+  },
+  "countryAliases": {
+    "Afghanistan": [
+      "AF",
+      "AFG"
+    ],
+    "Albania": [
+      "AL",
+      "ALB"
+    ],
+    "Algeria": [
+      "DZ",
+      "DZA"
+    ],
+    "American Samoa": [
+      "AS",
+      "ASM"
+    ],
+    "Andorra": [
+      "AD",
+      "AND"
+    ],
+    "Angola": [
+      "AO",
+      "AGO"
+    ],
+    "Anguilla": [
+      "AI",
+      "AIA"
+    ],
+    "Antarctica": [
+      "AQ",
+      "ATA"
+    ],
+    "Antigua and Barbuda": [
+      "AG",
+      "ATG"
+    ],
+    "Argentina": [
+      "AR",
+      "ARG"
+    ],
+    "Armenia": [
+      "AM",
+      "ARM"
+    ],
+    "Aruba": [
+      "AW",
+      "ABW"
+    ],
+    "Australia": [
+      "AU",
+      "AUS"
+    ],
+    "Austria": [
+      "AT",
+      "AUT",
+      "Österreich"
+    ],
+    "Azerbaijan": [
+      "AZ",
+      "AZE"
+    ],
+    "Bahamas": [
+      "BS",
+      "BHS",
+      "The Bahamas"
+    ],
+    "Bahrain": [
+      "BH",
+      "BHR"
+    ],
+    "Bangladesh": [
+      "BD",
+      "BGD"
+    ],
+    "Barbados": [
+      "BB",
+      "BRB"
+    ],
+    "Belarus": [
+      "BY",
+      "BLR"
+    ],
+    "Belgium": [
+      "BE",
+      "BEL",
+      "België",
+      "Belgique"
+    ],
+    "Belize": [
+      "BZ",
+      "BLZ"
+    ],
+    "Benin": [
+      "BJ",
+      "BEN"
+    ],
+    "Bermuda": [
+      "BM",
+      "BMU"
+    ],
+    "Bhutan": [
+      "BT",
+      "BTN"
+    ],
+    "Bolivia": [
+      "BO",
+      "BOL"
+    ],
+    "Bosnia and Herzegovina": [
+      "BA",
+      "BIH"
+    ],
+    "Botswana": [
+      "BW",
+      "BWA"
+    ],
+    "Bouvet Island": [
+      "BV",
+      "BVT"
+    ],
+    "Brazil": [
+      "BR",
+      "BRA",
+      "Brasil"
+    ],
+    "British Indian Ocean Territory": [
+      "IO",
+      "IOT"
+    ],
+    "Brunei": [
+      "BN",
+      "BRN",
+      "Brunei Darussalam"
+    ],
+    "Bulgaria": [
+      "BG",
+      "BGR"
+    ],
+    "Burkina Faso": [
+      "BF",
+      "BFA"
+    ],
+    "Burundi": [
+      "BI",
+      "BDI"
+    ],
+    "Cabo Verde": [
+      "CV",
+      "CPV",
+      "Cape Verde"
+    ],
+    "Cambodia": [
+      "KH",
+      "KHM"
+    ],
+    "Cameroon": [
+      "CM",
+      "CMR"
+    ],
+    "Canada": [
+      "CA",
+      "CAN"
+    ],
+    "Cayman Islands": [
+      "KY",
+      "CYM"
+    ],
+    "Central African Republic": [
+      "CF",
+      "CAF"
+    ],
+    "Chad": [
+      "TD",
+      "TCD"
+    ],
+    "Chile": [
+      "CL",
+      "CHL"
+    ],
+    "China": [
+      "CN",
+      "CHN",
+      "PRC",
+      "People's Republic of China"
+    ],
+    "Christmas Island": [
+      "CX",
+      "CXR"
+    ],
+    "Cocos (Keeling) Islands": [
+      "CC",
+      "CCK"
+    ],
+    "Colombia": [
+      "CO",
+      "COL"
+    ],
+    "Comoros": [
+      "KM",
+      "COM"
+    ],
+    "Congo": [
+      "CG",
+      "COG",
+      "Republic of the Congo"
+    ],
+    "Congo (Democratic Republic)": [
+      "CD",
+      "COD",
+      "DRC",
+      "DR Congo"
+    ],
+    "Cook Islands": [
+      "CK",
+      "COK"
+    ],
+    "Costa Rica": [
+      "CR",
+      "CRI"
+    ],
+    "Croatia": [
+      "HR",
+      "HRV",
+      "Hrvatska"
+    ],
+    "Cuba": [
+      "CU",
+      "CUB"
+    ],
+    "Curaçao": [
+      "CW",
+      "CUW",
+      "Curacao"
+    ],
+    "Cyprus": [
+      "CY",
+      "CYP"
+    ],
+    "Czech Republic": [
+      "CZ",
+      "CZE",
+      "Czechia"
+    ],
+    "Denmark": [
+      "DK",
+      "DNK",
+      "Danmark"
+    ],
+    "Djibouti": [
+      "DJ",
+      "DJI"
+    ],
+    "Dominica": [
+      "DM",
+      "DMA"
+    ],
+    "Dominican Republic": [
+      "DO",
+      "DOM"
+    ],
+    "Ecuador": [
+      "EC",
+      "ECU"
+    ],
+    "Egypt": [
+      "EG",
+      "EGY"
+    ],
+    "El Salvador": [
+      "SV",
+      "SLV"
+    ],
+    "Equatorial Guinea": [
+      "GQ",
+      "GNQ"
+    ],
+    "Eritrea": [
+      "ER",
+      "ERI"
+    ],
+    "Estonia": [
+      "EE",
+      "EST",
+      "Eesti"
+    ],
+    "Eswatini": [
+      "SZ",
+      "SWZ",
+      "Swaziland"
+    ],
+    "Ethiopia": [
+      "ET",
+      "ETH"
+    ],
+    "Falkland Islands": [
+      "FK",
+      "FLK"
+    ],
+    "Faroe Islands": [
+      "FO",
+      "FRO"
+    ],
+    "Fiji": [
+      "FJ",
+      "FJI"
+    ],
+    "Finland": [
+      "FI",
+      "FIN",
+      "Suomi"
+    ],
+    "France": [
+      "FR",
+      "FRA"
+    ],
+    "French Guiana": [
+      "GF",
+      "GUF"
+    ],
+    "French Polynesia": [
+      "PF",
+      "PYF"
+    ],
+    "Gabon": [
+      "GA",
+      "GAB"
+    ],
+    "Gambia": [
+      "GM",
+      "GMB",
+      "The Gambia"
+    ],
+    "Georgia": [
+      "GE",
+      "GEO"
+    ],
+    "Germany": [
+      "DE",
+      "DEU",
+      "GER",
+      "Deutschland"
+    ],
+    "Ghana": [
+      "GH",
+      "GHA"
+    ],
+    "Gibraltar": [
+      "GI",
+      "GIB"
+    ],
+    "Greece": [
+      "GR",
+      "GRC",
+      "Hellas"
+    ],
+    "Greenland": [
+      "GL",
+      "GRL"
+    ],
+    "Grenada": [
+      "GD",
+      "GRD"
+    ],
+    "Guadeloupe": [
+      "GP",
+      "GLP"
+    ],
+    "Guam": [
+      "GU",
+      "GUM"
+    ],
+    "Guatemala": [
+      "GT",
+      "GTM"
+    ],
+    "Guernsey": [
+      "GG",
+      "GGY"
+    ],
+    "Guinea": [
+      "GN",
+      "GIN"
+    ],
+    "Guinea-Bissau": [
+      "GW",
+      "GNB"
+    ],
+    "Guyana": [
+      "GY",
+      "GUY"
+    ],
+    "Haiti": [
+      "HT",
+      "HTI"
+    ],
+    "Honduras": [
+      "HN",
+      "HND"
+    ],
+    "Hong Kong": [
+      "HK",
+      "HKG",
+      "Hong Kong SAR"
+    ],
+    "Hungary": [
+      "HU",
+      "HUN",
+      "Magyarország"
+    ],
+    "Iceland": [
+      "IS",
+      "ISL",
+      "Ísland"
+    ],
+    "India": [
+      "IN",
+      "IND",
+      "Bharat"
+    ],
+    "Indonesia": [
+      "ID",
+      "IDN"
+    ],
+    "Iran": [
+      "IR",
+      "IRN",
+      "Islamic Republic of Iran"
+    ],
+    "Iraq": [
+      "IQ",
+      "IRQ"
+    ],
+    "Ireland": [
+      "IE",
+      "IRL",
+      "Éire"
+    ],
+    "Isle of Man": [
+      "IM",
+      "IMN"
+    ],
+    "Israel": [
+      "IL",
+      "ISR"
+    ],
+    "Italy": [
+      "IT",
+      "ITA",
+      "Italia"
+    ],
+    "Ivory Coast": [
+      "CI",
+      "CIV",
+      "Côte d'Ivoire",
+      "Cote d'Ivoire"
+    ],
+    "Jamaica": [
+      "JM",
+      "JAM"
+    ],
+    "Japan": [
+      "JP",
+      "JPN",
+      "Nippon",
+      "Nihon"
+    ],
+    "Jersey": [
+      "JE",
+      "JEY"
+    ],
+    "Jordan": [
+      "JO",
+      "JOR"
+    ],
+    "Kazakhstan": [
+      "KZ",
+      "KAZ"
+    ],
+    "Kenya": [
+      "KE",
+      "KEN"
+    ],
+    "Kiribati": [
+      "KI",
+      "KIR"
+    ],
+    "Kosovo": [
+      "XK",
+      "XKX"
+    ],
+    "Kuwait": [
+      "KW",
+      "KWT"
+    ],
+    "Kyrgyzstan": [
+      "KG",
+      "KGZ"
+    ],
+    "Laos": [
+      "LA",
+      "LAO",
+      "Lao PDR"
+    ],
+    "Latvia": [
+      "LV",
+      "LVA",
+      "Latvija"
+    ],
+    "Lebanon": [
+      "LB",
+      "LBN"
+    ],
+    "Lesotho": [
+      "LS",
+      "LSO"
+    ],
+    "Liberia": [
+      "LR",
+      "LBR"
+    ],
+    "Libya": [
+      "LY",
+      "LBY"
+    ],
+    "Liechtenstein": [
+      "LI",
+      "LIE"
+    ],
+    "Lithuania": [
+      "LT",
+      "LTU",
+      "Lietuva"
+    ],
+    "Luxembourg": [
+      "LU",
+      "LUX",
+      "Luxemburg"
+    ],
+    "Macao": [
+      "MO",
+      "MAC",
+      "Macau"
+    ],
+    "Madagascar": [
+      "MG",
+      "MDG"
+    ],
+    "Malawi": [
+      "MW",
+      "MWI"
+    ],
+    "Malaysia": [
+      "MY",
+      "MYS"
+    ],
+    "Maldives": [
+      "MV",
+      "MDV"
+    ],
+    "Mali": [
+      "ML",
+      "MLI"
+    ],
+    "Malta": [
+      "MT",
+      "MLT"
+    ],
+    "Marshall Islands": [
+      "MH",
+      "MHL"
+    ],
+    "Martinique": [
+      "MQ",
+      "MTQ"
+    ],
+    "Mauritania": [
+      "MR",
+      "MRT"
+    ],
+    "Mauritius": [
+      "MU",
+      "MUS"
+    ],
+    "Mayotte": [
+      "YT",
+      "MYT"
+    ],
+    "Mexico": [
+      "MX",
+      "MEX",
+      "México"
+    ],
+    "Micronesia": [
+      "FM",
+      "FSM",
+      "Federated States of Micronesia"
+    ],
+    "Moldova": [
+      "MD",
+      "MDA",
+      "Republic of Moldova"
+    ],
+    "Monaco": [
+      "MC",
+      "MCO"
+    ],
+    "Mongolia": [
+      "MN",
+      "MNG"
+    ],
+    "Montenegro": [
+      "ME",
+      "MNE"
+    ],
+    "Montserrat": [
+      "MS",
+      "MSR"
+    ],
+    "Morocco": [
+      "MA",
+      "MAR",
+      "Maroc"
+    ],
+    "Mozambique": [
+      "MZ",
+      "MOZ"
+    ],
+    "Myanmar": [
+      "MM",
+      "MMR",
+      "Burma"
+    ],
+    "Namibia": [
+      "NA",
+      "NAM"
+    ],
+    "Nauru": [
+      "NR",
+      "NRU"
+    ],
+    "Nepal": [
+      "NP",
+      "NPL"
+    ],
+    "Netherlands": [
+      "NL",
+      "NLD",
+      "Nederland",
+      "Holland"
+    ],
+    "New Caledonia": [
+      "NC",
+      "NCL"
+    ],
+    "New Zealand": [
+      "NZ",
+      "NZL",
+      "Aotearoa"
+    ],
+    "Nicaragua": [
+      "NI",
+      "NIC"
+    ],
+    "Niger": [
+      "NE",
+      "NER"
+    ],
+    "Nigeria": [
+      "NG",
+      "NGA"
+    ],
+    "Niue": [
+      "NU",
+      "NIU"
+    ],
+    "Norfolk Island": [
+      "NF",
+      "NFK"
+    ],
+    "North Korea": [
+      "KP",
+      "PRK",
+      "Democratic People's Republic of Korea",
+      "DPRK"
+    ],
+    "North Macedonia": [
+      "MK",
+      "MKD",
+      "Macedonia"
+    ],
+    "Northern Mariana Islands": [
+      "MP",
+      "MNP"
+    ],
+    "Norway": [
+      "NO",
+      "NOR",
+      "Norge"
+    ],
+    "Oman": [
+      "OM",
+      "OMN"
+    ],
+    "Pakistan": [
+      "PK",
+      "PAK"
+    ],
+    "Palau": [
+      "PW",
+      "PLW"
+    ],
+    "Palestine": [
+      "PS",
+      "PSE",
+      "State of Palestine"
+    ],
+    "Panama": [
+      "PA",
+      "PAN"
+    ],
+    "Papua New Guinea": [
+      "PG",
+      "PNG"
+    ],
+    "Paraguay": [
+      "PY",
+      "PRY"
+    ],
+    "Peru": [
+      "PE",
+      "PER",
+      "Perú"
+    ],
+    "Philippines": [
+      "PH",
+      "PHL"
+    ],
+    "Pitcairn": [
+      "PN",
+      "PCN"
+    ],
+    "Poland": [
+      "PL",
+      "POL",
+      "Polska"
+    ],
+    "Portugal": [
+      "PT",
+      "PRT"
+    ],
+    "Puerto Rico": [
+      "PR",
+      "PRI"
+    ],
+    "Qatar": [
+      "QA",
+      "QAT"
+    ],
+    "Réunion": [
+      "RE",
+      "REU",
+      "Reunion"
+    ],
+    "Romania": [
+      "RO",
+      "ROU",
+      "România"
+    ],
+    "Russia": [
+      "RU",
+      "RUS",
+      "Russian Federation"
+    ],
+    "Rwanda": [
+      "RW",
+      "RWA"
+    ],
+    "Saint Barthélemy": [
+      "BL",
+      "BLM",
+      "Saint Barthelemy"
+    ],
+    "Saint Helena": [
+      "SH",
+      "SHN"
+    ],
+    "Saint Kitts and Nevis": [
+      "KN",
+      "KNA"
+    ],
+    "Saint Lucia": [
+      "LC",
+      "LCA"
+    ],
+    "Saint Martin": [
+      "MF",
+      "MAF"
+    ],
+    "Saint Pierre and Miquelon": [
+      "PM",
+      "SPM"
+    ],
+    "Saint Vincent and the Grenadines": [
+      "VC",
+      "VCT"
+    ],
+    "Samoa": [
+      "WS",
+      "WSM"
+    ],
+    "San Marino": [
+      "SM",
+      "SMR"
+    ],
+    "Sao Tome and Principe": [
+      "ST",
+      "STP",
+      "São Tomé and Príncipe"
+    ],
+    "Saudi Arabia": [
+      "SA",
+      "SAU",
+      "KSA"
+    ],
+    "Senegal": [
+      "SN",
+      "SEN"
+    ],
+    "Serbia": [
+      "RS",
+      "SRB",
+      "Srbija"
+    ],
+    "Seychelles": [
+      "SC",
+      "SYC"
+    ],
+    "Sierra Leone": [
+      "SL",
+      "SLE"
+    ],
+    "Singapore": [
+      "SG",
+      "SGP"
+    ],
+    "Sint Maarten": [
+      "SX",
+      "SXM"
+    ],
+    "Slovakia": [
+      "SK",
+      "SVK",
+      "Slovensko"
+    ],
+    "Slovenia": [
+      "SI",
+      "SVN",
+      "Slovenija"
+    ],
+    "Solomon Islands": [
+      "SB",
+      "SLB"
+    ],
+    "Somalia": [
+      "SO",
+      "SOM"
+    ],
+    "South Africa": [
+      "ZA",
+      "ZAF",
+      "RSA"
+    ],
+    "South Korea": [
+      "KR",
+      "KOR",
+      "Republic of Korea",
+      "ROK",
+      "Korea"
+    ],
+    "South Sudan": [
+      "SS",
+      "SSD"
+    ],
+    "Spain": [
+      "ES",
+      "ESP",
+      "España"
+    ],
+    "Sri Lanka": [
+      "LK",
+      "LKA"
+    ],
+    "Sudan": [
+      "SD",
+      "SDN"
+    ],
+    "Suriname": [
+      "SR",
+      "SUR"
+    ],
+    "Sweden": [
+      "SE",
+      "SWE",
+      "Sverige"
+    ],
+    "Switzerland": [
+      "CH",
+      "CHE",
+      "Schweiz",
+      "Suisse",
+      "Svizzera"
+    ],
+    "Syria": [
+      "SY",
+      "SYR",
+      "Syrian Arab Republic"
+    ],
+    "Taiwan": [
+      "TW",
+      "TWN",
+      "Chinese Taipei",
+      "Republic of China",
+      "ROC"
+    ],
+    "Tajikistan": [
+      "TJ",
+      "TJK"
+    ],
+    "Tanzania": [
+      "TZ",
+      "TZA",
+      "United Republic of Tanzania"
+    ],
+    "Thailand": [
+      "TH",
+      "THA"
+    ],
+    "Timor-Leste": [
+      "TL",
+      "TLS",
+      "East Timor"
+    ],
+    "Togo": [
+      "TG",
+      "TGO"
+    ],
+    "Tokelau": [
+      "TK",
+      "TKL"
+    ],
+    "Tonga": [
+      "TO",
+      "TON"
+    ],
+    "Trinidad and Tobago": [
+      "TT",
+      "TTO"
+    ],
+    "Tunisia": [
+      "TN",
+      "TUN"
+    ],
+    "Turkey": [
+      "TR",
+      "TUR",
+      "Türkiye",
+      "Turkiye"
+    ],
+    "Turkmenistan": [
+      "TM",
+      "TKM"
+    ],
+    "Turks and Caicos Islands": [
+      "TC",
+      "TCA"
+    ],
+    "Tuvalu": [
+      "TV",
+      "TUV"
+    ],
+    "Uganda": [
+      "UG",
+      "UGA"
+    ],
+    "Ukraine": [
+      "UA",
+      "UKR"
+    ],
+    "United Arab Emirates": [
+      "AE",
+      "ARE",
+      "UAE"
+    ],
+    "United Kingdom": [
+      "GB",
+      "GBR",
+      "UK",
+      "Great Britain",
+      "Britain",
+      "England"
+    ],
+    "United States": [
+      "US",
+      "USA",
+      "U.S.",
+      "U.S.A.",
+      "United States of America",
+      "America"
+    ],
+    "Uruguay": [
+      "UY",
+      "URY"
+    ],
+    "Uzbekistan": [
+      "UZ",
+      "UZB"
+    ],
+    "Vanuatu": [
+      "VU",
+      "VUT"
+    ],
+    "Vatican City": [
+      "VA",
+      "VAT",
+      "Holy See"
+    ],
+    "Venezuela": [
+      "VE",
+      "VEN"
+    ],
+    "Vietnam": [
+      "VN",
+      "VNM",
+      "Viet Nam"
+    ],
+    "Virgin Islands (British)": [
+      "VG",
+      "VGB",
+      "BVI"
+    ],
+    "Virgin Islands (U.S.)": [
+      "VI",
+      "VIR",
+      "USVI"
+    ],
+    "Wallis and Futuna": [
+      "WF",
+      "WLF"
+    ],
+    "Western Sahara": [
+      "EH",
+      "ESH"
+    ],
+    "Yemen": [
+      "YE",
+      "YEM"
+    ],
+    "Zambia": [
+      "ZM",
+      "ZMB"
+    ],
+    "Zimbabwe": [
+      "ZW",
+      "ZWE"
+    ]
+  },
+  "stateAliases": {
+    "United States": {
+      "Alabama": [
+        "AL",
+        "Ala."
+      ],
+      "Alaska": [
+        "AK",
+        "Alas."
+      ],
+      "Arizona": [
+        "AZ",
+        "Ariz."
+      ],
+      "Arkansas": [
+        "AR",
+        "Ark."
+      ],
+      "California": [
+        "CA",
+        "Calif.",
+        "Cal."
+      ],
+      "Colorado": [
+        "CO",
+        "Colo."
+      ],
+      "Connecticut": [
+        "CT",
+        "Conn."
+      ],
+      "Delaware": [
+        "DE",
+        "Del."
+      ],
+      "District of Columbia": [
+        "DC",
+        "D.C.",
+        "Washington DC",
+        "Washington, D.C."
+      ],
+      "Florida": [
+        "FL",
+        "Fla."
+      ],
+      "Georgia": [
+        "GA",
+        "Ga."
+      ],
+      "Hawaii": [
+        "HI",
+        "Haw."
+      ],
+      "Idaho": [
+        "ID",
+        "Ida."
+      ],
+      "Illinois": [
+        "IL",
+        "Ill."
+      ],
+      "Indiana": [
+        "IN",
+        "Ind."
+      ],
+      "Iowa": [
+        "IA",
+        "Ia."
+      ],
+      "Kansas": [
+        "KS",
+        "Kans.",
+        "Kan."
+      ],
+      "Kentucky": [
+        "KY",
+        "Ky."
+      ],
+      "Louisiana": [
+        "LA",
+        "La."
+      ],
+      "Maine": [
+        "ME",
+        "Me."
+      ],
+      "Maryland": [
+        "MD",
+        "Md."
+      ],
+      "Massachusetts": [
+        "MA",
+        "Mass."
+      ],
+      "Michigan": [
+        "MI",
+        "Mich."
+      ],
+      "Minnesota": [
+        "MN",
+        "Minn."
+      ],
+      "Mississippi": [
+        "MS",
+        "Miss."
+      ],
+      "Missouri": [
+        "MO",
+        "Mo."
+      ],
+      "Montana": [
+        "MT",
+        "Mont."
+      ],
+      "Nebraska": [
+        "NE",
+        "Nebr.",
+        "Neb."
+      ],
+      "Nevada": [
+        "NV",
+        "Nev."
+      ],
+      "New Hampshire": [
+        "NH",
+        "N.H."
+      ],
+      "New Jersey": [
+        "NJ",
+        "N.J."
+      ],
+      "New Mexico": [
+        "NM",
+        "N.M.",
+        "N. Mex."
+      ],
+      "New York": [
+        "NY",
+        "N.Y."
+      ],
+      "North Carolina": [
+        "NC",
+        "N.C."
+      ],
+      "North Dakota": [
+        "ND",
+        "N.D.",
+        "N. Dak."
+      ],
+      "Ohio": [
+        "OH"
+      ],
+      "Oklahoma": [
+        "OK",
+        "Okla."
+      ],
+      "Oregon": [
+        "OR",
+        "Ore.",
+        "Oreg."
+      ],
+      "Pennsylvania": [
+        "PA",
+        "Pa.",
+        "Penn."
+      ],
+      "Rhode Island": [
+        "RI",
+        "R.I."
+      ],
+      "South Carolina": [
+        "SC",
+        "S.C."
+      ],
+      "South Dakota": [
+        "SD",
+        "S.D.",
+        "S. Dak."
+      ],
+      "Tennessee": [
+        "TN",
+        "Tenn."
+      ],
+      "Texas": [
+        "TX",
+        "Tex."
+      ],
+      "Utah": [
+        "UT"
+      ],
+      "Vermont": [
+        "VT",
+        "Vt."
+      ],
+      "Virginia": [
+        "VA",
+        "Va."
+      ],
+      "Washington": [
+        "WA",
+        "Wash."
+      ],
+      "West Virginia": [
+        "WV",
+        "W.V.",
+        "W. Va."
+      ],
+      "Wisconsin": [
+        "WI",
+        "Wis.",
+        "Wisc."
+      ],
+      "Wyoming": [
+        "WY",
+        "Wyo."
+      ],
+      "American Samoa": [
+        "AS"
+      ],
+      "Guam": [
+        "GU"
+      ],
+      "Northern Mariana Islands": [
+        "MP"
+      ],
+      "Puerto Rico": [
+        "PR",
+        "P.R."
+      ],
+      "U.S. Virgin Islands": [
+        "VI",
+        "U.S.V.I."
+      ],
+      "Armed Forces Americas": [
+        "AA"
+      ],
+      "Armed Forces Europe": [
+        "AE"
+      ],
+      "Armed Forces Pacific": [
+        "AP"
+      ]
+    },
+    "Canada": {
+      "Alberta": [
+        "AB",
+        "Alta."
+      ],
+      "British Columbia": [
+        "BC",
+        "B.C."
+      ],
+      "Manitoba": [
+        "MB",
+        "Man."
+      ],
+      "New Brunswick": [
+        "NB",
+        "N.B."
+      ],
+      "Newfoundland and Labrador": [
+        "NL",
+        "N.L.",
+        "Newfoundland",
+        "Labrador"
+      ],
+      "Northwest Territories": [
+        "NT",
+        "N.W.T."
+      ],
+      "Nova Scotia": [
+        "NS",
+        "N.S."
+      ],
+      "Nunavut": [
+        "NU"
+      ],
+      "Ontario": [
+        "ON",
+        "Ont."
+      ],
+      "Prince Edward Island": [
+        "PE",
+        "P.E.I.",
+        "PEI"
+      ],
+      "Quebec": [
+        "QC",
+        "Que.",
+        "Qué.",
+        "Québec"
+      ],
+      "Saskatchewan": [
+        "SK",
+        "Sask."
+      ],
+      "Yukon": [
+        "YT",
+        "Yuk.",
+        "Yukon Territory"
+      ]
+    }
+  }
+}

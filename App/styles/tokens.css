@@ -1,0 +1,226 @@
+/* ============================================================
+   Progress Design System — Progress List Upload Formatter
+   Source: progress-design-system-guide.md
+   ============================================================ */
+:root {
+  /* Color primitives */
+  --pw-dark-blue-w1: #00122c;
+  --pw-dark-blue-w2: #001f4b;
+  --pw-dark-blue-w3: #151950;
+  --pw-blue-p1: #00216b;
+  --pw-blue-p2: #2b2bb2;
+  --pw-blue-p3: #4b4bf7;
+  --pw-blue-p4: #5777ea;
+  --pw-blue-p5: #dcecff;
+  --pw-blue-w1: #0037cb;
+  --pw-blue-w2: #054bff;
+  --pw-green-p1: #008963;
+  --pw-green-p2: #00b563;
+  --pw-green-p4: #62de7f;
+  --pw-logo-green: #5ce500;
+  --pw-red-w1: #b90138;
+  --pw-red-w2: #eb0249;
+  --pw-orange-s3: #ffbb26;
+  --pw-yellow-s1: #ffd000;
+  --pw-purple-s4: #8174f2;
+  --pw-teal-s4: #00d5c7;
+  --pw-light-grey-w1: #f5f6f7;
+  --pw-light-grey-w2: #f4f7fd;
+  --pw-light-grey-s2: #dde9f7;
+  --pw-light-grey-s3: #eef5ff;
+  --pw-dark-grey-w2: #383f55;
+  --pw-dark-grey-s4: #9eaec3;
+  --pw-shadow-base: #04142b;
+  --pw-white: #ffffff;
+  --pw-black: #000000;
+
+  /* Semantic color tokens */
+  --color-primary: var(--pw-red-w2);
+  --color-primary-hover: var(--pw-red-w1);
+  --color-secondary: var(--pw-blue-w2);
+  --color-secondary-hover: var(--pw-blue-w1);
+  --color-dark-navy: var(--pw-dark-blue-w2);
+  --color-dark-navy-hover: var(--pw-dark-blue-w1);
+  --color-success: var(--pw-green-p1);
+  --color-success-light: #ebf7f3;
+  --color-success-border: #b3e0d0;
+  --color-warning: var(--pw-orange-s3);
+  --color-warning-light: #fff8e6;
+  --color-warning-border: #ffe9a0;
+  --color-danger: var(--pw-red-w2);
+  --color-danger-hover: var(--pw-red-w1);
+  --color-danger-light: #ffeef3;
+  --color-danger-border: #f9bac8;
+  --color-info: var(--pw-blue-w2);
+  --color-info-light: var(--pw-light-grey-s3);
+  --color-text-heading: #060606;
+  --color-text-body: var(--pw-dark-grey-w2);
+  --color-text-link: var(--pw-blue-w2);
+  --color-text-link-hover: var(--pw-blue-w1);
+  --color-text-muted: var(--pw-dark-grey-s4);
+  --color-text-white: var(--pw-white);
+  --color-label: rgba(0, 0, 0, 0.80);
+  --color-bg: var(--pw-white);
+  --color-bg-subtle: var(--pw-light-grey-w1);
+  --color-bg-light: var(--pw-light-grey-w2);
+  --color-bg-blue: var(--pw-light-grey-s3);
+  --color-bg-dark: var(--pw-dark-blue-w2);
+  --color-border: var(--pw-light-grey-s2);
+  --color-border-form: rgba(158, 174, 195, 0.80);
+  --color-border-hover: var(--pw-dark-grey-w2);
+  --color-separator: rgba(158, 174, 195, 0.40);
+
+  /* Existing app aliases */
+  --progress-navy: var(--color-dark-navy);
+  --progress-green: var(--color-success);
+  --progress-blue: var(--color-secondary);
+  --progress-pink: var(--color-primary);
+  --surface-gray: var(--color-bg-light);
+  --action-blue: var(--color-secondary);
+  --alert-red: var(--color-danger);
+  --dark-grey-s4: var(--pw-dark-grey-s4);
+  --bg-base: var(--color-bg-light);
+  --bg-elevated: var(--color-bg);
+  --bg-input: var(--pw-white);
+  --bg-sky: var(--color-bg-blue);
+  --bg-mint: var(--color-success-light);
+  --text-heading: var(--color-text-heading);
+  --text-primary: var(--color-text-body);
+  --text-secondary: #536077;
+  --text-muted: var(--color-text-muted);
+  --link: var(--color-text-link);
+  --border: var(--color-border);
+  --border-strong: var(--color-border-form);
+  --warning-yellow: var(--color-warning);
+
+  /* Typography */
+  --font-display: "Progress Sans Display VF", Inter, "Segoe UI", system-ui, Arial, sans-serif;
+  --font-text: "Progress Sans Text VF", Inter, "Segoe UI", system-ui, Arial, sans-serif;
+  --font-heading: var(--font-display);
+  --font-body: var(--font-text);
+
+  /* Practical app typography scale */
+  --text-h1: 40px;
+  --text-h2: 30px;
+  --text-h3: 26px;
+  --text-h4: 20px;
+  --text-body-size: 18px;
+  --text-body-compact: 15px;
+  --text-label: 13px;
+  --text-micro: 12px;
+
+  /* Spacing */
+  --space-5: 5px;
+  --space-10: 10px;
+  --space-20: 20px;
+  --space-30: 30px;
+  --space-40: 40px;
+  --space-50: 50px;
+  --space-60: 60px;
+  --space-70: 70px;
+  --space-80: 80px;
+  --space-90: 90px;
+  --space-100: 100px;
+
+  /* Existing app spacing aliases */
+  --space-1: var(--space-5);
+  --space-2: var(--space-10);
+  --space-3: var(--space-20);
+  --space-4: var(--space-20);
+  --space-6: var(--space-30);
+  --space-8: var(--space-40);
+  --space-12: var(--space-50);
+
+  /* Grid widths */
+  --col-8: 370px;
+  --col-12: 570px;
+  --col-16: 770px;
+  --col-20: 970px;
+  --col-24: 1170px;
+
+  /* Radius */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 5px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+  --radius-pill: 20px;
+
+  /* Elevation */
+  --shadow-xs: 0 3px 6px rgba(4, 20, 43, 0.06);
+  --shadow-sm: 0 8px 13px rgba(4, 20, 43, 0.07);
+  --shadow-md: 0 10px 15px rgba(4, 20, 43, 0.10);
+  --shadow-lg: 0 12px 20px rgba(4, 20, 43, 0.12);
+}
+
+html[data-theme="dark"] {
+  --color-text-heading: var(--pw-white);
+  --color-text-body: var(--pw-white);
+  --color-text-link: #90b6ff;
+  --color-text-link-hover: var(--pw-light-grey-s3);
+  --color-bg: var(--pw-dark-blue-w2);
+  --color-bg-subtle: var(--pw-dark-blue-w3);
+  --color-bg-light: #071827;
+  --color-bg-blue: rgba(144, 182, 255, 0.12);
+  --color-border: rgba(158, 174, 195, 0.40);
+  --color-border-form: rgba(158, 174, 195, 0.80);
+  --color-separator: rgba(158, 174, 195, 0.40);
+  --bg-base: var(--color-bg-light);
+  --bg-elevated: var(--color-bg);
+  --bg-input: #102f4f;
+  --text-heading: var(--pw-white);
+  --text-primary: var(--pw-white);
+  --text-secondary: #d8e2ef;
+  --text-muted: #b9c7d8;
+  --link: #90b6ff;
+  --border: var(--color-border);
+  --border-strong: var(--color-border-form);
+}
+
+html[data-teams-theme="default"] {
+  --bg-base: var(--pw-light-grey-w2);
+  --bg-elevated: var(--pw-white);
+  --bg-input: var(--pw-white);
+  --text-heading: #060606;
+  --text-primary: var(--pw-dark-grey-w2);
+  --link: var(--pw-blue-w2);
+}
+
+html[data-teams-theme="dark"] {
+  --bg-base: #071827;
+  --bg-elevated: var(--pw-dark-blue-w2);
+  --bg-input: #102f4f;
+  --text-heading: var(--pw-white);
+  --text-primary: var(--pw-white);
+  --text-secondary: #d8e2ef;
+  --link: #90b6ff;
+  --border: rgba(158, 174, 195, 0.40);
+  --border-strong: rgba(158, 174, 195, 0.80);
+}
+
+html[data-teams-theme="contrast"] {
+  --bg-base: #000000;
+  --bg-elevated: #000000;
+  --bg-input: #000000;
+  --text-heading: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --link: #90b6ff;
+  --border: #ffffff;
+  --border-strong: #ffffff;
+  --color-primary: #ff6b8f;
+  --color-secondary: #90b6ff;
+  --color-success: #62de7f;
+  --color-warning: #ffd000;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
+@media (max-width: 590px) {
+  :root {
+    --font-display: Arial, sans-serif;
+    --font-text: Arial, sans-serif;
+  }
+}
